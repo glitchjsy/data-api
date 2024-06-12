@@ -1,0 +1,2 @@
+INSERT INTO `companies` (`id`,`name`) VALUES ("6060f60d-17a1-49c8-aa4a-c268721a806a", "Government of Jersey");
+INSERT INTO `companies` (`id`,`name`) VALUES ("02c416be-d70b-4ccc-968f-8675fa3eb0c5", "Jersey Development Company");
