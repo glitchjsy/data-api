@@ -15,8 +15,12 @@ class MySQL {
                     return reject(err);
                 }
                 return resolve(results);
-            })
+            });
         })
+    }
+
+    public format(sql: string, params?: any): Promise<any> {
+        return this.pool.format(sql, params);
     }
 }
 

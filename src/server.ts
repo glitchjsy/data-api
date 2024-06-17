@@ -11,7 +11,7 @@ import "./utils/puppeteer";
 import requestInterceptor from "./utils/request-interceptor";
 
 const app = express();
-const port = 8080;
+const port = 8081;
 
 // Disable X-Powered-By header
 app.disable("x-powered-by");

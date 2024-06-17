@@ -20,7 +20,7 @@ router.get("/", cache("1 hour", onlyApiSuccess), async (req, res) => {
             companies ON companies.id = carparks.ownerId
     `) as Carpark[];
 
-    return res.json(carparks.map((c: any) => {
+    const mappedCarparks = carparks.map((c: any) => {
         const carpark = { ...c } as any;
 
         delete carpark.ownerId;
@@ -33,7 +33,8 @@ router.get("/", cache("1 hour", onlyApiSuccess), async (req, res) => {
                 name: c.ownerName
             }
         }
-    }))
+    });
+    return res.json({ results: mappedCarparks });
 });
 
 router.get("/live-spaces", cache("1 minute", onlyApiSuccess), async (req, res) => {
