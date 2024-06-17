@@ -40,6 +40,17 @@ CREATE TABLE `carparkPaymentMethods` (
     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `liveParkingSpaces` (
+    `id` int auto_increment NOT NULL,
+    `createdAt` timestamp NOT NULL,
+    `name` varchar(30) NOT NULL,
+    `code` varchar(20) NOT NULL,
+    `spaces` int NOT NULL,
+    `status` varchar(20) NOT NULL,
+    `open` boolean NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `vehicles` (
     `id` int auto_increment NOT NULL,
     `firstRegisteredAt` date NOT NULL,
@@ -56,3 +67,36 @@ CREATE TABLE `vehicles` (
 );
 
 ALTER TABLE `vehicles` ADD INDEX `vehicle_hash_index` (`hash`);
+
+CREATE TABLE `publicAccessDefibrillators` (
+    `id` varchar(40) DEFAULT (uuid()),
+    `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
+    `updatedAt` timestamp DEFAULT current_timestamp ON UPDATE current_timestamp NOT NULL,
+    `location` varchar(80) NOT NULL,
+    `parish` varchar(30) NOT NULL,
+    `padNumber` int,
+    `latitude` decimal(10, 8),
+    `longitude` decimal(11, 8),
+    `notes` text,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `recyclingCentres` (
+    `id` varchar(40) DEFAULT (uuid()),
+    `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
+    `updatedAt` timestamp DEFAULT current_timestamp ON UPDATE current_timestamp NOT NULL,
+    `location` varchar(80) NOT NULL,
+    `parish` varchar(30) NOT NULL,
+    `latitude` decimal(10, 8),
+    `longitude` decimal(11, 8),
+    `notes` text,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `recyclingCentreServices` (
+    `id` int auto_increment NOT NULL,
+    `recyclingCentreId` varchar(40) NOT NULL,
+    `service` varchar(50) NOT NULL, 
+    FOREIGN KEY (`recyclingCentreId`) REFERENCES `recyclingCentres`(`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+);

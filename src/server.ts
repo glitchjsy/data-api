@@ -3,6 +3,8 @@ import cors from "cors";
 import express from "express";
 import carparksRoute from "./routes/v1/carparks";
 import vehiclesRoute from "./routes/v1/vehicles";
+import recyclingRoute from "./routes/v1/recycling";
+import defibrillatorsRoute from "./routes/v1/defibrillators";
 import errorHandler from "./utils/error-handler";
 import { ErrorCode } from "./utils/errors/ErrorCode";
 import { RouteError } from "./utils/errors/RouteError";
@@ -27,6 +29,8 @@ app.use(requestInterceptor);
 // v1 routes
 app.use("/v1/carparks", carparksRoute);
 app.use("/v1/vehicles", vehiclesRoute);
+app.use("/v1/recycling", recyclingRoute);
+app.use("/v1/defibrillators", defibrillatorsRoute);
 
 // Handle 404 errors
 app.use("*", (req, res) => {
