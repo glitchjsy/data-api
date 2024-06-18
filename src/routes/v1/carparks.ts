@@ -46,6 +46,11 @@ router.get("/live-spaces", cache("1 minute", onlyApiSuccess), async (req, res) =
     return res.json(JSON.parse(json));
 });
 
+router.get("/test-spaces", async (req, res) => {
+    const query = await mysql.execute('SELECT * FROM liveparkingspaces ORDER BY createdAt DESC LIMIT 1588');
+    return res.json(query);
+});
+
 router.use(errorHandler);
 
 export default router;

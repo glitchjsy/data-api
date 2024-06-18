@@ -100,3 +100,17 @@ CREATE TABLE `recyclingCentreServices` (
     FOREIGN KEY (`recyclingCentreId`) REFERENCES `recyclingCentres`(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `productRecalls` (
+    `id` int NOT NULL,
+    `title` varchar(150) NOT NULL,
+    `imageUrl` varchar(250),
+    `brand` varchar(120) NOT NULL,
+    `recallDate` timestamp NOT NULL,
+    `packSize` varchar(220),
+    `batchCodes` text,
+    `problem` text,
+    `furtherInformation` text,
+    `websiteUrl` varchar(250),
+    PRIMARY KEY (`id`)
+);
