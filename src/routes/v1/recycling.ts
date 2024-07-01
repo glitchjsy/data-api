@@ -24,6 +24,8 @@ router.get("/", cache("1 hour", onlyApiSuccess), async (req, res) => {
         
         return {
             ...item,
+            latitude: item.latitude !== null ? Number(item.latitude) : null,
+            longitude: item.longitude !== null ? Number(item.longitude) : null,
             services: servicesArray
         }
     });

@@ -36,8 +36,8 @@ router.get("/", async (req, res) => {
             updatedAt: item.updatedAt,
             name: item.name,
             parish: item.parish,
-            latitude: item.latitude,
-            longitude: item.longitude,
+            latitude: Number(item.latitude),
+            longitude: Number(item.longitude),
             tenure: item.tenure,
             owner: {
                 id: item.ownerId,
