@@ -6,6 +6,7 @@ import vehiclesRoute from "./routes/v1/vehicles";
 import recyclingRoute from "./routes/v1/recycling";
 import defibrillatorsRoute from "./routes/v1/defibrillators";
 import productRecallsRoute from "./routes/v1/product-recalls";
+import toiletsRoute from "./routes/v1/toilets";
 import errorHandler from "./utils/error-handler";
 import { ErrorCode } from "./utils/errors/ErrorCode";
 import { RouteError } from "./utils/errors/RouteError";
@@ -33,6 +34,7 @@ app.use("/v1/vehicles", vehiclesRoute);
 app.use("/v1/recycling", recyclingRoute);
 app.use("/v1/defibrillators", defibrillatorsRoute);
 app.use("/v1/product-recalls", productRecallsRoute);
+app.use("/v1/toilets", toiletsRoute);
 
 // Handle 404 errors
 app.use("*", (req, res) => {

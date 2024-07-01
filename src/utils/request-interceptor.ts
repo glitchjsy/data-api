@@ -3,7 +3,7 @@ import log from "./log";
 import { ErrorCode } from "./errors/ErrorCode";
 
 export default function requestInterceptor(req: Request, res: Response, next: Function) {
-    if (!req.headers["User-Agent"]) {
+    if (!req.headers["user-agent"]) {
         return res.status(400).json({
             error: ErrorCode.MISSING_USER_AGENT,
             status: 400,

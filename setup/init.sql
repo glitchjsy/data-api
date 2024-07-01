@@ -101,6 +101,47 @@ CREATE TABLE `recyclingCentreServices` (
     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `publicToilets` (
+    `id` varchar(40) DEFAULT (uuid()),
+    `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
+    `updatedAt` timestamp DEFAULT current_timestamp ON UPDATE current_timestamp NOT NULL,
+    `name` varchar(120) NOT NULL,
+    `parish` varchar(30) NOT NULL,
+    `latitude` decimal(10, 8),
+    `longitude` decimal(11, 8),
+    `tenure` varchar(20) NOT NULL,
+    `ownerId` varchar(40),
+    `buildDate` int,
+    `female` boolean NOT NULL,
+    `femaleCubicles` int,
+    `femaleHandDryers` int,
+    `femaleSinks` int,
+    `male` boolean NOT NULL,
+    `maleCubicles` int,
+    `maleUrinals` int,
+    `maleHandDryers` int,
+    `maleSinks` int,
+    FOREIGN KEY (`ownerId`) REFERENCES `companies`(`id`) ON DELETE SET NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `publicToiletFacilities` (
+    `id` int auto_increment NOT NULL,
+    `facility` varchar(30) NOT NULL,
+    `publicToiletId` varchar(40) NOT NULL,
+    FOREIGN KEY (`publicToiletId`) REFERENCES `publicToilets`(`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `publicToiletPeriodProducts` (
+    `id` int auto_increment NOT NULL,
+    `product` varchar(30) NOT NULL,
+    `type` varchar(20) NOT NULL, /* enum */
+    `publicToiletId` varchar(40) NOT NULL,
+    FOREIGN KEY (`publicToiletId`) REFERENCES `publicToilets`(`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `productRecalls` (
     `id` int NOT NULL,
     `title` varchar(150) NOT NULL,
