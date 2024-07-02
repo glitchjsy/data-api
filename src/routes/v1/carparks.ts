@@ -4,7 +4,7 @@ import { Carpark } from "../../models/Carpark";
 import mysql from "../../mysql";
 import redis from "../../redis";
 import errorHandler from "../../utils/error-handler";
-import { onlyApiSuccess } from "../../utils/utils";
+import { onlyApiSuccess, queryDateSql } from "../../utils/utils";
 
 const router = Router();
 const cache = apicache.middleware;
@@ -49,9 +49,21 @@ router.get("/live-spaces", cache("1 minute", onlyApiSuccess), async (req, res) =
     return res.json(JSON.parse(json));
 });
 
+router.get("/live-spaces/dates", async (req, res) => {
+    const results = await mysql.execute("SELECT DISTINCT DATE_FORMAT(createdAt, '%Y-%m-%d') AS date FROM liveParkingSpaces ORDER BY date DESC");
+    const dates = results.map((row: any) => row.date);
+
+    return res.json({ results: dates });
+});
+
+
 router.get("/test-spaces", async (req, res) => {
-    const query = await mysql.execute('SELECT * FROM liveparkingspaces ORDER BY createdAt DESC LIMIT 1588');
-    return res.json(query);
+    const results = await mysql.execute(`
+        SELECT * FROM liveParkingSpaces
+        WHERE DATE(createdAt) = ?
+        ORDER BY createdAt DESC
+    `, [req.query.date]);
+    return res.json(results);
 });
 
 router.use(errorHandler);

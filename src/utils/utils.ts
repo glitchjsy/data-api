@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ErrorCode } from "./errors/ErrorCode";
 import { RouteError } from "./errors/RouteError";
 
-const DATE_FORMAT = /^\d{4}-\d{2}-\d{2}$/;
+export const DATE_FORMAT = /^\d{4}-\d{2}-\d{2}$/;
 
 export const VEHICLE_DATA_LAST_UPDATED = "2024-04-08T23:00:00.000Z";
 
