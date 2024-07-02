@@ -1,7 +1,6 @@
 CREATE TABLE `companies` (
     `id` varchar(40) DEFAULT (uuid()) NOT NULL,
     `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
-    `updatedAt` timestamp DEFAULT current_timestamp ON UPDATE current_timestamp NOT NULL,
     `name` varchar(50) NOT NULL,
     `address` varchar(100),
     `emailAddress` varchar(100),
@@ -13,7 +12,6 @@ CREATE TABLE `companies` (
 CREATE TABLE `carparks` (
     `id` varchar(40) DEFAULT (uuid()),
     `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
-    `updatedAt` timestamp DEFAULT current_timestamp ON UPDATE current_timestamp NOT NULL,
     `name` varchar(50) NOT NULL,
     `payByPhoneCode` varchar(10),
     `ownerId` varchar(40),
@@ -71,7 +69,6 @@ ALTER TABLE `vehicles` ADD INDEX `vehicle_hash_index` (`hash`);
 CREATE TABLE `publicAccessDefibrillators` (
     `id` varchar(40) DEFAULT (uuid()),
     `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
-    `updatedAt` timestamp DEFAULT current_timestamp ON UPDATE current_timestamp NOT NULL,
     `location` varchar(80) NOT NULL,
     `parish` varchar(30) NOT NULL,
     `padNumber` int,
@@ -84,7 +81,6 @@ CREATE TABLE `publicAccessDefibrillators` (
 CREATE TABLE `recyclingCentres` (
     `id` varchar(40) DEFAULT (uuid()),
     `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
-    `updatedAt` timestamp DEFAULT current_timestamp ON UPDATE current_timestamp NOT NULL,
     `location` varchar(80) NOT NULL,
     `parish` varchar(30) NOT NULL,
     `latitude` decimal(10, 8),
@@ -104,7 +100,6 @@ CREATE TABLE `recyclingCentreServices` (
 CREATE TABLE `publicToilets` (
     `id` varchar(40) DEFAULT (uuid()),
     `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
-    `updatedAt` timestamp DEFAULT current_timestamp ON UPDATE current_timestamp NOT NULL,
     `name` varchar(120) NOT NULL,
     `parish` varchar(30) NOT NULL,
     `latitude` decimal(10, 8),
@@ -139,6 +134,17 @@ CREATE TABLE `publicToiletPeriodProducts` (
     `type` varchar(20) NOT NULL, /* enum */
     `publicToiletId` varchar(40) NOT NULL,
     FOREIGN KEY (`publicToiletId`) REFERENCES `publicToilets`(`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `busStops` (
+    `id` varchar(40) NOT NULL,
+    `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
+    `name` varchar(50) NOT NULL,
+    `code` varchar(4) NOT NULL,
+    `latitude` decimal(10, 8),
+    `longitude` decimal(11, 8),
+    `shelter` boolean NOT NULL,
     PRIMARY KEY (`id`)
 );
 

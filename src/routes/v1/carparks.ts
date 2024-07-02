@@ -28,6 +28,7 @@ router.get("/", cache("1 hour", onlyApiSuccess), async (req, res) => {
 
         return {
             ...carpark,
+            multiStorey: Boolean(c.multiStorey),
             latitude: carpark.latitude !== null ? Number(carpark.latitude) : null,
             longitude: carpark.longitude !== null ? Number(carpark.longitude) : null,
             owner: {
