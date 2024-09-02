@@ -48,52 +48,6 @@ router.get("/", cache("1 hour", onlyApiSuccess), async (req, res) => {
     }
 });
 
-router.get("/:idOrCode", cache("1 hour", onlyApiSuccess), async (req, res) => {
-    try {
-        const idOrCode = req.params.idOrCode;
-
-        if (!idOrCode) {
-            throw new RouteError(ErrorCode.INVALID_REQUEST, 400, "Missing Carpark ID or Live Tracking Code");
-        }
-
-        const isUuid = uuidRegex.test(idOrCode);
-
-        const carparkResult = await mysql.execute(`
-        SELECT 
-            carparks.*,
-            companies.name AS ownerName 
-        FROM
-            carparks
-        LEFT JOIN
-            companies ON companies.id = carparks.ownerId
-        WHERE
-            ${isUuid ? "carparks.id" : "carparks.liveTrackingCode"} = ?
-    `, [idOrCode]);
-
-        if (carparkResult.length === 0) {
-            throw new RouteError(ErrorCode.NOT_FOUND, 404, "Carpark not found");
-        }
-
-        const carpark = carparkResult[0];
-
-        delete carpark.ownerId;
-        delete carpark.ownerName;
-
-        return res.json({
-            ...carpark,
-            multiStorey: Boolean(carpark.multiStorey),
-            latitude: carpark.latitude !== null ? Number(carpark.latitude) : null,
-            longitude: carpark.longitude !== null ? Number(carpark.longitude) : null,
-            owner: {
-                id: carpark.ownerId,
-                name: carpark.ownerName
-            }
-        });
-    } catch (e: any) {
-        return handleError(e, req, res);
-    }
-});
-
 router.get("/live-spaces", cache("1 minute", onlyApiSuccess), async (req, res) => {
     try {
         const json = await redis.getAsync("data-livespaces:json");
@@ -118,7 +72,6 @@ router.get("/live-spaces/dates", async (req, res) => {
     }
 });
 
-
 router.get("/test-spaces", async (req, res) => {
     const results = await mysql.execute(`
         SELECT * FROM liveParkingSpaces
@@ -126,6 +79,52 @@ router.get("/test-spaces", async (req, res) => {
         ORDER BY createdAt DESC
     `, [req.query.date]);
     return res.json(results);
+});
+
+router.get("/:idOrCode", cache("1 hour", onlyApiSuccess), async (req, res) => {
+    try {
+        const idOrCode = req.params.idOrCode;
+
+        if (!idOrCode) {
+            throw new RouteError(ErrorCode.INVALID_REQUEST, 400, "Missing Carpark ID or Live Tracking Code");
+        }
+
+        const isUuid = uuidRegex.test(idOrCode);
+
+        const carparkResult = await mysql.execute(`
+            SELECT 
+                carparks.*,
+                companies.name AS ownerName 
+            FROM
+                carparks
+            LEFT JOIN
+                companies ON companies.id = carparks.ownerId
+            WHERE
+                ${isUuid ? "carparks.id" : "carparks.liveTrackingCode"} = ?
+        `, [idOrCode]);
+
+        if (carparkResult.length === 0) {
+            throw new RouteError(ErrorCode.NOT_FOUND, 404, "Carpark not found");
+        }
+
+        const carpark = carparkResult[0];
+
+        delete carpark.ownerId;
+        delete carpark.ownerName;
+
+        return res.json({
+            ...carpark,
+            multiStorey: Boolean(carpark.multiStorey),
+            latitude: carpark.latitude !== null ? Number(carpark.latitude) : null,
+            longitude: carpark.longitude !== null ? Number(carpark.longitude) : null,
+            owner: {
+                id: carpark.ownerId,
+                name: carpark.ownerName
+            }
+        });
+    } catch (e: any) {
+        return handleError(e, req, res);
+    }
 });
 
 export default router;
