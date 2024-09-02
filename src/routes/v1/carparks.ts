@@ -154,7 +154,7 @@ router.get("/:idOrCode", cache("1 hour", onlyApiSuccess), async (req, res) => {
             throw new RouteError(ErrorCode.NOT_FOUND, 404, "Carpark not found");
         }
 
-        const carpark = carparkResult[0];
+        const carpark = { ...carparkResult[0] };
 
         delete carpark.ownerId;
         delete carpark.ownerName;
@@ -165,8 +165,8 @@ router.get("/:idOrCode", cache("1 hour", onlyApiSuccess), async (req, res) => {
             latitude: carpark.latitude !== null ? Number(carpark.latitude) : null,
             longitude: carpark.longitude !== null ? Number(carpark.longitude) : null,
             owner: {
-                id: carpark.ownerId,
-                name: carpark.ownerName
+                id: carparkResult[0].ownerId,
+                name: carparkResult[0].ownerName
             }
         });
     } catch (e: any) {
