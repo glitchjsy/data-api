@@ -7,10 +7,10 @@ export function handleError(err: Error, req: Request, res: Response) {
     let routeErr = err instanceof RouteError ? err : new RouteError(
         ErrorCode.SERVER_ERROR,
         req.statusCode ?? 500,
-        err.message
+        "An error has occurred"
     );
 
-    log.debug(`Error: (${routeErr.status}) ${routeErr.message}`);
+    log.debug(`Error: (${routeErr.status}) ${err.message}`);
 
     return res.status(routeErr.status).json({
         error: routeErr.code,

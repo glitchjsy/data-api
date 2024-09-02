@@ -7,6 +7,7 @@ import { handleError } from "../../utils/error-handler";
 import { ErrorCode } from "../../utils/errors/ErrorCode";
 import { RouteError } from "../../utils/errors/RouteError";
 import { onlyApiSuccess } from "../../utils/utils";
+import log from "../../utils/log";
 
 const router = Router();
 const cache = apicache.middleware;
@@ -16,14 +17,14 @@ const uuidRegex = /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-
 router.get("/", cache("1 hour", onlyApiSuccess), async (req, res) => {
     try {
         const carparks = await mysql.execute(`
-        SELECT 
-            carparks.*,
-            companies.name AS ownerName 
-        FROM
-            carparks
-        LEFT JOIN
-            companies ON companies.id = carparks.ownerId
-    `) as Carpark[];
+            SELECT 
+                carparks.*,
+                companies.name AS ownerName 
+            FROM
+                carparks
+            LEFT JOIN
+                companies ON companies.id = carparks.ownerId
+        `) as Carpark[];
 
         const mappedCarparks = carparks.map((c: any) => {
             const carpark = { ...c } as any;
@@ -55,7 +56,53 @@ router.get("/live-spaces", cache("1 minute", onlyApiSuccess), async (req, res) =
         if (!json) {
             return res.json([]);
         }
-        return res.json(JSON.parse(json));
+
+        const parsed = JSON.parse(json);
+        let output = [];
+
+        if (req.query.includeCarparkInfo === "true") {
+            for (const spaceData of parsed.results) {
+                try {
+                    const result = await mysql.execute(`
+                        SELECT 
+                            carparks.*,
+                            companies.name AS ownerName 
+                        FROM
+                            carparks
+                        LEFT JOIN
+                            companies ON companies.id = carparks.ownerId
+                        WHERE
+                           carparks.liveTrackingCode = ?
+                    `, [spaceData.code]);
+
+                    if (result.length === 0) {
+                        log.warn(`Carpark with live tracking code ${spaceData.code} not found`);
+                        output.push({ ...spaceData, carparkInfo: null });
+                        continue;
+                    }
+
+                    const carpark = result[0];
+
+                    delete carpark.ownerId;
+                    delete carpark.ownerName;
+
+                    output.push({
+                        ...spaceData,
+                        carparkInfo: carpark
+                    });
+                } catch (e: any) {
+                    log.debug(`Error: ${e.message}`);
+                    output.push({ ...spaceData, carparkInfo: null });
+                    continue;
+                }
+            }
+        } else {
+            output = parsed.results;
+        }
+
+        return res.json({
+            results: output
+        });
     } catch (e: any) {
         return handleError(e, req, res);
     }
