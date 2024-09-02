@@ -3,7 +3,7 @@ import { RouteError } from "./errors/RouteError";
 import { ErrorCode } from "./errors/ErrorCode";
 import log from "./log";
 
-export default function (err: Error, req: Request, res: Response, next?: NextFunction) {
+export function handleError(err: Error, req: Request, res: Response) {
     let routeErr = err instanceof RouteError ? err : new RouteError(
         ErrorCode.SERVER_ERROR,
         req.statusCode ?? 500,

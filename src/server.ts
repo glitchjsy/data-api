@@ -9,15 +9,15 @@ import productRecallsRoute from "./routes/v1/product-recalls";
 import toiletsRoute from "./routes/v1/toilets";
 import eatsafeRoute from "./routes/v1/eatsafe";
 import busesRoute from "./routes/v1/bus";
-import errorHandler from "./utils/error-handler";
 import { ErrorCode } from "./utils/errors/ErrorCode";
 import { RouteError } from "./utils/errors/RouteError";
 import log from "./utils/log";
 import "./utils/puppeteer";
 import requestInterceptor from "./utils/request-interceptor";
+import { handleError } from "./utils/error-handler";
 
 const app = express();
-const port = 8080;
+const port = 8081;
 
 // Disable X-Powered-By header
 app.disable("x-powered-by");
@@ -42,10 +42,12 @@ app.use("/v1/eatsafe", eatsafeRoute);
 
 // Handle 404 errors
 app.use("*", (req, res) => {
-    throw new RouteError(ErrorCode.NOT_FOUND, 404, "Resource not found");
+    try {
+        throw new RouteError(ErrorCode.NOT_FOUND, 404, "Resource not found");
+    } catch (e: any) {
+        return handleError(e, req, res);
+    }
 });
-
-app.use(errorHandler);
 
 app.listen(port, () => {
     log.info(`Server is running on ${port}`);

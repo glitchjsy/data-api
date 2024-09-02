@@ -3,14 +3,19 @@ import { Router } from "express";
 import { Carpark } from "../../models/Carpark";
 import mysql from "../../mysql";
 import redis from "../../redis";
-import errorHandler from "../../utils/error-handler";
-import { onlyApiSuccess, queryDateSql } from "../../utils/utils";
+import { handleError } from "../../utils/error-handler";
+import { ErrorCode } from "../../utils/errors/ErrorCode";
+import { RouteError } from "../../utils/errors/RouteError";
+import { onlyApiSuccess } from "../../utils/utils";
 
 const router = Router();
 const cache = apicache.middleware;
 
+const uuidRegex = /^[0-9A-F]{8}-[0-9A-F]{4}-[4][0-9A-F]{3}-[89AB][0-9A-F]{3}-[0-9A-F]{12}$/i;
+
 router.get("/", cache("1 hour", onlyApiSuccess), async (req, res) => {
-    const carparks = await mysql.execute(`
+    try {
+        const carparks = await mysql.execute(`
         SELECT 
             carparks.*,
             companies.name AS ownerName 
@@ -20,40 +25,97 @@ router.get("/", cache("1 hour", onlyApiSuccess), async (req, res) => {
             companies ON companies.id = carparks.ownerId
     `) as Carpark[];
 
-    const mappedCarparks = carparks.map((c: any) => {
-        const carpark = { ...c } as any;
+        const mappedCarparks = carparks.map((c: any) => {
+            const carpark = { ...c } as any;
+
+            delete carpark.ownerId;
+            delete carpark.ownerName;
+
+            return {
+                ...carpark,
+                multiStorey: Boolean(c.multiStorey),
+                latitude: carpark.latitude !== null ? Number(carpark.latitude) : null,
+                longitude: carpark.longitude !== null ? Number(carpark.longitude) : null,
+                owner: {
+                    id: c.ownerId,
+                    name: c.ownerName
+                }
+            }
+        });
+        return res.json({ results: mappedCarparks });
+    } catch (e: any) {
+        return handleError(e, req, res);
+    }
+});
+
+router.get("/:idOrCode", cache("1 hour", onlyApiSuccess), async (req, res) => {
+    try {
+        const idOrCode = req.params.idOrCode;
+
+        if (!idOrCode) {
+            throw new RouteError(ErrorCode.INVALID_REQUEST, 400, "Missing Carpark ID or Live Tracking Code");
+        }
+
+        const isUuid = uuidRegex.test(idOrCode);
+
+        const carparkResult = await mysql.execute(`
+        SELECT 
+            carparks.*,
+            companies.name AS ownerName 
+        FROM
+            carparks
+        LEFT JOIN
+            companies ON companies.id = carparks.ownerId
+        WHERE
+            ${isUuid ? "carparks.id" : "carparks.liveTrackingCode"} = ?
+    `, [idOrCode]);
+
+        if (carparkResult.length === 0) {
+            throw new RouteError(ErrorCode.NOT_FOUND, 404, "Carpark not found");
+        }
+
+        const carpark = carparkResult[0];
 
         delete carpark.ownerId;
         delete carpark.ownerName;
 
-        return {
+        return res.json({
             ...carpark,
-            multiStorey: Boolean(c.multiStorey),
+            multiStorey: Boolean(carpark.multiStorey),
             latitude: carpark.latitude !== null ? Number(carpark.latitude) : null,
             longitude: carpark.longitude !== null ? Number(carpark.longitude) : null,
             owner: {
-                id: c.ownerId,
-                name: c.ownerName
+                id: carpark.ownerId,
+                name: carpark.ownerName
             }
-        }
-    });
-    return res.json({ results: mappedCarparks });
+        });
+    } catch (e: any) {
+        return handleError(e, req, res);
+    }
 });
 
 router.get("/live-spaces", cache("1 minute", onlyApiSuccess), async (req, res) => {
-    const json = await redis.getAsync("data-livespaces:json");
+    try {
+        const json = await redis.getAsync("data-livespaces:json");
 
-    if (!json) {
-        return res.json([]);
+        if (!json) {
+            return res.json([]);
+        }
+        return res.json(JSON.parse(json));
+    } catch (e: any) {
+        return handleError(e, req, res);
     }
-    return res.json(JSON.parse(json));
 });
 
 router.get("/live-spaces/dates", async (req, res) => {
-    const results = await mysql.execute("SELECT DISTINCT DATE_FORMAT(createdAt, '%Y-%m-%d') AS date FROM liveParkingSpaces ORDER BY date DESC");
-    const dates = results.map((row: any) => row.date);
+    try {
+        const results = await mysql.execute("SELECT DISTINCT DATE_FORMAT(createdAt, '%Y-%m-%d') AS date FROM liveParkingSpaces ORDER BY date DESC");
+        const dates = results.map((row: any) => row.date);
 
-    return res.json({ results: dates });
+        return res.json({ results: dates });
+    } catch (e: any) {
+        return handleError(e, req, res);
+    }
 });
 
 
@@ -65,7 +127,5 @@ router.get("/test-spaces", async (req, res) => {
     `, [req.query.date]);
     return res.json(results);
 });
-
-router.use(errorHandler);
 
 export default router;

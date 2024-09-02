@@ -3,7 +3,7 @@ import { Request, Response, Router } from "express";
 import rateLimit from "express-rate-limit";
 import { Vehicle } from "../../models/Vehicle";
 import mysql from "../../mysql";
-import errorHandler from "../../utils/error-handler";
+import { handleError } from "../../utils/error-handler";
 import puppeteer from "../../utils/puppeteer";
 import { onlyApiSuccess, queryDateSql, queryParamNumber, rateLimitHandler, reduceOccurrences } from "../../utils/utils";
 
@@ -73,7 +73,7 @@ router.get("/", [
             results: mappedVehicles
         });
     } catch (e: any) {
-        errorHandler(e, req, res);
+        handleError(e, req, res);
     }
 });
 
@@ -100,7 +100,7 @@ router.get("/stats", [
             }
         });
     } catch (e: any) {
-        errorHandler(e, req, res);
+        handleError(e, req, res);
     }
 });
 
@@ -127,7 +127,7 @@ router.get("/stats/colors", [
             results: occurrences
         });
     } catch (e: any) {
-        errorHandler(e, req, res);
+        handleError(e, req, res);
     }
 });
 
@@ -154,7 +154,7 @@ router.get("/stats/makes", [
             results: occurrences
         });
     } catch (e: any) {
-        errorHandler(e, req, res);
+        handleError(e, req, res);
     }
 });
 
@@ -211,7 +211,7 @@ router.get("/stats/models", [
             results: occurrences
         });
     } catch (e: any) {
-        errorHandler(e, req, res);
+        handleError(e, req, res);
     }
 });
 
@@ -224,7 +224,7 @@ router.get("/:plate", [
         const output = await puppeteer.queue(req.params.plate);
         return res.json(output);
     } catch (e: any) {
-        errorHandler(e, req, res);
+        handleError(e, req, res);
     }
 });
 
