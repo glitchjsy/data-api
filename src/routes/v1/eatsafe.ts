@@ -14,7 +14,7 @@ router.get("/", cache("1 minute", onlyApiSuccess), async (req, res) => {
         if (!json) {
             return res.json([]);
         }
-        return res.json(JSON.parse(json));
+        return res.json({ results: JSON.parse(json) });
     } catch (e: any) {
         return handleError(e, req, res);
     }
