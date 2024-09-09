@@ -1,0 +1,997 @@
+[
+    {
+        "date": "2019-01-13",
+        "tunnelMovements": "",
+        "overpassMovements": "221990"
+    },
+    {
+        "date": "2019-01-20",
+        "tunnelMovements": "",
+        "overpassMovements": "228180"
+    },
+    {
+        "date": "2019-01-27",
+        "tunnelMovements": "177420",
+        "overpassMovements": "229990"
+    },
+    {
+        "date": "2019-02-03",
+        "tunnelMovements": "170880",
+        "overpassMovements": "230900"
+    },
+    {
+        "date": "2019-02-10",
+        "tunnelMovements": "176400",
+        "overpassMovements": "229760"
+    },
+    {
+        "date": "2019-02-17",
+        "tunnelMovements": "178630",
+        "overpassMovements": "235250"
+    },
+    {
+        "date": "2019-02-24",
+        "tunnelMovements": "177720",
+        "overpassMovements": "237840"
+    },
+    {
+        "date": "2019-03-03",
+        "tunnelMovements": "179590",
+        "overpassMovements": "238610"
+    },
+    {
+        "date": "2019-03-10",
+        "tunnelMovements": "180510",
+        "overpassMovements": "239370"
+    },
+    {
+        "date": "2019-03-17",
+        "tunnelMovements": "178880",
+        "overpassMovements": "235910"
+    },
+    {
+        "date": "2019-03-24",
+        "tunnelMovements": "184090",
+        "overpassMovements": "245960"
+    },
+    {
+        "date": "2019-03-31",
+        "tunnelMovements": "185540",
+        "overpassMovements": "249810"
+    },
+    {
+        "date": "2019-04-07",
+        "tunnelMovements": "182700",
+        "overpassMovements": "248450"
+    },
+    {
+        "date": "2019-04-14",
+        "tunnelMovements": "184600",
+        "overpassMovements": "254660"
+    },
+    {
+        "date": "2019-04-21",
+        "tunnelMovements": "177980",
+        "overpassMovements": "245060"
+    },
+    {
+        "date": "2019-04-28",
+        "tunnelMovements": "180470",
+        "overpassMovements": "242370"
+    },
+    {
+        "date": "2019-05-05",
+        "tunnelMovements": "175790",
+        "overpassMovements": "251910"
+    },
+    {
+        "date": "2019-05-12",
+        "tunnelMovements": "164660",
+        "overpassMovements": "222580"
+    },
+    {
+        "date": "2019-05-19",
+        "tunnelMovements": "184940",
+        "overpassMovements": "253170"
+    },
+    {
+        "date": "2019-05-26",
+        "tunnelMovements": "186450",
+        "overpassMovements": "256440"
+    },
+    {
+        "date": "2019-06-02",
+        "tunnelMovements": "179140",
+        "overpassMovements": "237550"
+    },
+    {
+        "date": "2019-06-09",
+        "tunnelMovements": "186520",
+        "overpassMovements": "253750"
+    },
+    {
+        "date": "2019-06-16",
+        "tunnelMovements": "185680",
+        "overpassMovements": "251670"
+    },
+    {
+        "date": "2019-06-23",
+        "tunnelMovements": "188760",
+        "overpassMovements": "258330"
+    },
+    {
+        "date": "2019-06-30",
+        "tunnelMovements": "188290",
+        "overpassMovements": "258180"
+    },
+    {
+        "date": "2019-07-07",
+        "tunnelMovements": "187610",
+        "overpassMovements": "259490"
+    },
+    {
+        "date": "2019-07-14",
+        "tunnelMovements": "190540",
+        "overpassMovements": "263990"
+    },
+    {
+        "date": "2019-07-21",
+        "tunnelMovements": "189390",
+        "overpassMovements": "261480"
+    },
+    {
+        "date": "2019-07-28",
+        "tunnelMovements": "186470",
+        "overpassMovements": "255820"
+    },
+    {
+        "date": "2019-08-04",
+        "tunnelMovements": "186440",
+        "overpassMovements": "255570"
+    },
+    {
+        "date": "2019-08-11",
+        "tunnelMovements": "173650",
+        "overpassMovements": "229060"
+    },
+    {
+        "date": "2019-08-18",
+        "tunnelMovements": "184390",
+        "overpassMovements": "250010"
+    },
+    {
+        "date": "2019-08-25",
+        "tunnelMovements": "181580",
+        "overpassMovements": "244560"
+    },
+    {
+        "date": "2019-09-01",
+        "tunnelMovements": "176830",
+        "overpassMovements": "238240"
+    },
+    {
+        "date": "2019-09-08",
+        "tunnelMovements": "184480",
+        "overpassMovements": "248260"
+    },
+    {
+        "date": "2019-09-15",
+        "tunnelMovements": "179260",
+        "overpassMovements": "238090"
+    },
+    {
+        "date": "2019-09-22",
+        "tunnelMovements": "179840",
+        "overpassMovements": "243520"
+    },
+    {
+        "date": "2019-09-29",
+        "tunnelMovements": "177200",
+        "overpassMovements": "237890"
+    },
+    {
+        "date": "2019-10-06",
+        "tunnelMovements": "181840",
+        "overpassMovements": "241260"
+    },
+    {
+        "date": "2019-10-13",
+        "tunnelMovements": "176970",
+        "overpassMovements": "239970"
+    },
+    {
+        "date": "2019-10-20",
+        "tunnelMovements": "176790",
+        "overpassMovements": "240520"
+    },
+    {
+        "date": "2019-10-27",
+        "tunnelMovements": "175820",
+        "overpassMovements": "241110"
+    },
+    {
+        "date": "2019-11-03",
+        "tunnelMovements": "",
+        "overpassMovements": "246580"
+    },
+    {
+        "date": "2019-11-10",
+        "tunnelMovements": "",
+        "overpassMovements": "236950"
+    },
+    {
+        "date": "2019-11-17",
+        "tunnelMovements": "177870",
+        "overpassMovements": "238140"
+    },
+    {
+        "date": "2019-11-24",
+        "tunnelMovements": "175050",
+        "overpassMovements": "236820"
+    },
+    {
+        "date": "2019-12-01",
+        "tunnelMovements": "172120",
+        "overpassMovements": "238010"
+    },
+    {
+        "date": "2019-12-08",
+        "tunnelMovements": "179390",
+        "overpassMovements": "237820"
+    },
+    {
+        "date": "2019-12-15",
+        "tunnelMovements": "180190",
+        "overpassMovements": "236680"
+    },
+    {
+        "date": "2019-12-22",
+        "tunnelMovements": "180570",
+        "overpassMovements": "239040"
+    },
+    {
+        "date": "2019-12-29",
+        "tunnelMovements": "131610",
+        "overpassMovements": "165340"
+    },
+    {
+        "date": "2020-01-05",
+        "tunnelMovements": "143130",
+        "overpassMovements": "182700"
+    },
+    {
+        "date": "2020-01-12",
+        "tunnelMovements": "",
+        "overpassMovements": "224130"
+    },
+    {
+        "date": "2020-01-19",
+        "tunnelMovements": "",
+        "overpassMovements": "229380"
+    },
+    {
+        "date": "2020-01-26",
+        "tunnelMovements": "174680",
+        "overpassMovements": "229910"
+    },
+    {
+        "date": "2020-02-02",
+        "tunnelMovements": "174420",
+        "overpassMovements": "229930"
+    },
+    {
+        "date": "2020-02-09",
+        "tunnelMovements": "173020",
+        "overpassMovements": "229320"
+    },
+    {
+        "date": "2020-02-16",
+        "tunnelMovements": "163990",
+        "overpassMovements": "234070"
+    },
+    {
+        "date": "2020-02-23",
+        "tunnelMovements": "167920",
+        "overpassMovements": "238110"
+    },
+    {
+        "date": "2020-03-01",
+        "tunnelMovements": "165990",
+        "overpassMovements": "240400"
+    },
+    {
+        "date": "2020-03-08",
+        "tunnelMovements": "173360",
+        "overpassMovements": "242540"
+    },
+    {
+        "date": "2020-03-15",
+        "tunnelMovements": "168480",
+        "overpassMovements": "234940"
+    },
+    {
+        "date": "2020-03-22",
+        "tunnelMovements": "152390",
+        "overpassMovements": "209390"
+    },
+    {
+        "date": "2020-03-29",
+        "tunnelMovements": "116340",
+        "overpassMovements": "160150"
+    },
+    {
+        "date": "2020-04-05",
+        "tunnelMovements": "79100",
+        "overpassMovements": "104930"
+    },
+    {
+        "date": "2020-04-12",
+        "tunnelMovements": "74230",
+        "overpassMovements": "96920"
+    },
+    {
+        "date": "2020-04-19",
+        "tunnelMovements": "81250",
+        "overpassMovements": "105720"
+    },
+    {
+        "date": "2020-04-26",
+        "tunnelMovements": "92490",
+        "overpassMovements": "119820"
+    },
+    {
+        "date": "2020-05-03",
+        "tunnelMovements": "106740",
+        "overpassMovements": "136390"
+    },
+    {
+        "date": "2020-05-10",
+        "tunnelMovements": "112410",
+        "overpassMovements": "147190"
+    },
+    {
+        "date": "2020-05-17",
+        "tunnelMovements": "131210",
+        "overpassMovements": "173770"
+    },
+    {
+        "date": "2020-05-24",
+        "tunnelMovements": "141730",
+        "overpassMovements": "188950"
+    },
+    {
+        "date": "2020-05-31",
+        "tunnelMovements": "148290",
+        "overpassMovements": "198390"
+    },
+    {
+        "date": "2020-06-07",
+        "tunnelMovements": "153020",
+        "overpassMovements": "204500"
+    },
+    {
+        "date": "2020-06-14",
+        "tunnelMovements": "155830",
+        "overpassMovements": "208560"
+    },
+    {
+        "date": "2020-06-21",
+        "tunnelMovements": "165310",
+        "overpassMovements": "226140"
+    },
+    {
+        "date": "2020-06-28",
+        "tunnelMovements": "172010",
+        "overpassMovements": "234540"
+    },
+    {
+        "date": "2020-07-05",
+        "tunnelMovements": "170680",
+        "overpassMovements": "233900"
+    },
+    {
+        "date": "2020-07-12",
+        "tunnelMovements": "175660",
+        "overpassMovements": "239980"
+    },
+    {
+        "date": "2020-07-19",
+        "tunnelMovements": "177670",
+        "overpassMovements": "239000"
+    },
+    {
+        "date": "2020-07-26",
+        "tunnelMovements": "180390",
+        "overpassMovements": "242840"
+    },
+    {
+        "date": "2020-08-02",
+        "tunnelMovements": "181710",
+        "overpassMovements": "243730"
+    },
+    {
+        "date": "2020-08-09",
+        "tunnelMovements": "180980",
+        "overpassMovements": "246510"
+    },
+    {
+        "date": "2020-08-16",
+        "tunnelMovements": "179710",
+        "overpassMovements": "244980"
+    },
+    {
+        "date": "2020-08-23",
+        "tunnelMovements": "180130",
+        "overpassMovements": "244970"
+    },
+    {
+        "date": "2020-08-30",
+        "tunnelMovements": "179380",
+        "overpassMovements": "245420"
+    },
+    {
+        "date": "2020-09-06",
+        "tunnelMovements": "172770",
+        "overpassMovements": "235830"
+    },
+    {
+        "date": "2020-09-13",
+        "tunnelMovements": "179030",
+        "overpassMovements": "243610"
+    },
+    {
+        "date": "2020-09-20",
+        "tunnelMovements": "179540",
+        "overpassMovements": "243860"
+    },
+    {
+        "date": "2020-09-27",
+        "tunnelMovements": "178750",
+        "overpassMovements": "239160"
+    },
+    {
+        "date": "2020-10-04",
+        "tunnelMovements": "172280",
+        "overpassMovements": "232430"
+    },
+    {
+        "date": "2020-10-11",
+        "tunnelMovements": "180500",
+        "overpassMovements": "237790"
+    },
+    {
+        "date": "2020-10-18",
+        "tunnelMovements": "179730",
+        "overpassMovements": "236010"
+    },
+    {
+        "date": "2020-10-25",
+        "tunnelMovements": "178660",
+        "overpassMovements": "235690"
+    },
+    {
+        "date": "2020-11-01",
+        "tunnelMovements": "174260",
+        "overpassMovements": "232340"
+    },
+    {
+        "date": "2020-11-08",
+        "tunnelMovements": "175000",
+        "overpassMovements": "233660"
+    },
+    {
+        "date": "2020-11-15",
+        "tunnelMovements": "",
+        "overpassMovements": "233850"
+    },
+    {
+        "date": "2020-11-22",
+        "tunnelMovements": "",
+        "overpassMovements": "232850"
+    },
+    {
+        "date": "2020-11-29",
+        "tunnelMovements": "",
+        "overpassMovements": "234510"
+    },
+    {
+        "date": "2020-12-06",
+        "tunnelMovements": "163780",
+        "overpassMovements": "213950"
+    },
+    {
+        "date": "2020-12-13",
+        "tunnelMovements": "156100",
+        "overpassMovements": "204980"
+    },
+    {
+        "date": "2020-12-20",
+        "tunnelMovements": "154300",
+        "overpassMovements": "207970"
+    },
+    {
+        "date": "2020-12-27",
+        "tunnelMovements": "107960",
+        "overpassMovements": "160900"
+    },
+    {
+        "date": "2021-01-03",
+        "tunnelMovements": "",
+        "overpassMovements": "141650"
+    },
+    {
+        "date": "2021-01-10",
+        "tunnelMovements": "",
+        "overpassMovements": "187900"
+    },
+    {
+        "date": "2021-01-17",
+        "tunnelMovements": "",
+        "overpassMovements": "198110"
+    },
+    {
+        "date": "2021-01-24",
+        "tunnelMovements": "",
+        "overpassMovements": "200240"
+    },
+    {
+        "date": "2021-01-31",
+        "tunnelMovements": "",
+        "overpassMovements": "202600"
+    },
+    {
+        "date": "2021-02-07",
+        "tunnelMovements": "",
+        "overpassMovements": "211630"
+    },
+    {
+        "date": "2021-02-14",
+        "tunnelMovements": "",
+        "overpassMovements": "210720"
+    },
+    {
+        "date": "2021-02-21",
+        "tunnelMovements": "",
+        "overpassMovements": "217970"
+    },
+    {
+        "date": "2021-02-28",
+        "tunnelMovements": "",
+        "overpassMovements": "232330"
+    },
+    {
+        "date": "2021-03-07",
+        "tunnelMovements": "",
+        "overpassMovements": "231890"
+    },
+    {
+        "date": "2021-03-14",
+        "tunnelMovements": "",
+        "overpassMovements": "229310"
+    },
+    {
+        "date": "2021-03-21",
+        "tunnelMovements": "",
+        "overpassMovements": "235500"
+    },
+    {
+        "date": "2021-03-28",
+        "tunnelMovements": "",
+        "overpassMovements": "238740"
+    },
+    {
+        "date": "2021-04-04",
+        "tunnelMovements": "",
+        "overpassMovements": "234700"
+    },
+    {
+        "date": "2021-04-11",
+        "tunnelMovements": "",
+        "overpassMovements": "228780"
+    },
+    {
+        "date": "2021-04-18",
+        "tunnelMovements": "",
+        "overpassMovements": "243830"
+    },
+    {
+        "date": "2021-04-25",
+        "tunnelMovements": "",
+        "overpassMovements": "246600"
+    },
+    {
+        "date": "2021-05-02",
+        "tunnelMovements": "",
+        "overpassMovements": "250110"
+    },
+    {
+        "date": "2021-05-09",
+        "tunnelMovements": "",
+        "overpassMovements": "237540"
+    },
+    {
+        "date": "2021-05-16",
+        "tunnelMovements": "",
+        "overpassMovements": "251240"
+    },
+    {
+        "date": "2021-05-23",
+        "tunnelMovements": "",
+        "overpassMovements": "254340"
+    },
+    {
+        "date": "2021-05-30",
+        "tunnelMovements": "",
+        "overpassMovements": "271450"
+    },
+    {
+        "date": "2021-06-06",
+        "tunnelMovements": "",
+        "overpassMovements": "247740"
+    },
+    {
+        "date": "2021-06-13",
+        "tunnelMovements": "",
+        "overpassMovements": "260360"
+    },
+    {
+        "date": "2021-06-20",
+        "tunnelMovements": "",
+        "overpassMovements": "260520"
+    },
+    {
+        "date": "2021-06-27",
+        "tunnelMovements": "",
+        "overpassMovements": "259620"
+    },
+    {
+        "date": "2021-07-04",
+        "tunnelMovements": "",
+        "overpassMovements": "257840"
+    },
+    {
+        "date": "2021-07-11",
+        "tunnelMovements": "",
+        "overpassMovements": "252850"
+    },
+    {
+        "date": "2021-07-18",
+        "tunnelMovements": "",
+        "overpassMovements": "252580"
+    },
+    {
+        "date": "2021-07-25",
+        "tunnelMovements": "",
+        "overpassMovements": "245350"
+    },
+    {
+        "date": "2021-08-01",
+        "tunnelMovements": "",
+        "overpassMovements": "249830"
+    },
+    {
+        "date": "2021-08-08",
+        "tunnelMovements": "",
+        "overpassMovements": "251300"
+    },
+    {
+        "date": "2021-08-15",
+        "tunnelMovements": "",
+        "overpassMovements": "257770"
+    },
+    {
+        "date": "2021-08-22",
+        "tunnelMovements": "",
+        "overpassMovements": "253790"
+    },
+    {
+        "date": "2021-08-29",
+        "tunnelMovements": "",
+        "overpassMovements": "254210"
+    },
+    {
+        "date": "2021-09-05",
+        "tunnelMovements": "",
+        "overpassMovements": "243880"
+    },
+    {
+        "date": "2021-09-12",
+        "tunnelMovements": "",
+        "overpassMovements": "242460"
+    },
+    {
+        "date": "2021-09-19",
+        "tunnelMovements": "",
+        "overpassMovements": "248880"
+    },
+    {
+        "date": "2021-09-26",
+        "tunnelMovements": "",
+        "overpassMovements": "248370"
+    },
+    {
+        "date": "2021-10-03",
+        "tunnelMovements": "",
+        "overpassMovements": "232810"
+    },
+    {
+        "date": "2021-10-10",
+        "tunnelMovements": "",
+        "overpassMovements": "248810"
+    },
+    {
+        "date": "2021-10-17",
+        "tunnelMovements": "",
+        "overpassMovements": "251710"
+    },
+    {
+        "date": "2021-10-24",
+        "tunnelMovements": "",
+        "overpassMovements": "245640"
+    },
+    {
+        "date": "2021-10-31",
+        "tunnelMovements": "",
+        "overpassMovements": "216120"
+    },
+    {
+        "date": "2021-11-07",
+        "tunnelMovements": "",
+        "overpassMovements": "243770"
+    },
+    {
+        "date": "2021-11-14",
+        "tunnelMovements": "",
+        "overpassMovements": "245320"
+    },
+    {
+        "date": "2021-11-21",
+        "tunnelMovements": "",
+        "overpassMovements": "243550"
+    },
+    {
+        "date": "2021-11-28",
+        "tunnelMovements": "",
+        "overpassMovements": "243100"
+    },
+    {
+        "date": "2021-12-05",
+        "tunnelMovements": "",
+        "overpassMovements": "242800"
+    },
+    {
+        "date": "2021-12-12",
+        "tunnelMovements": "",
+        "overpassMovements": "243600"
+    },
+    {
+        "date": "2021-12-19",
+        "tunnelMovements": "",
+        "overpassMovements": "247090"
+    },
+    {
+        "date": "2021-12-26",
+        "tunnelMovements": "",
+        "overpassMovements": "203800"
+    },
+    {
+        "date": "2022-01-02",
+        "tunnelMovements": "",
+        "overpassMovements": "168530"
+    },
+    {
+        "date": "2022-01-09",
+        "tunnelMovements": "",
+        "overpassMovements": "200000"
+    },
+    {
+        "date": "2022-01-16",
+        "tunnelMovements": "",
+        "overpassMovements": "215160"
+    },
+    {
+        "date": "2022-01-23",
+        "tunnelMovements": "",
+        "overpassMovements": "218680"
+    },
+    {
+        "date": "2022-01-30",
+        "tunnelMovements": "",
+        "overpassMovements": "221460"
+    },
+    {
+        "date": "2022-02-06",
+        "tunnelMovements": "",
+        "overpassMovements": "218310"
+    },
+    {
+        "date": "2022-02-13",
+        "tunnelMovements": "",
+        "overpassMovements": "220600"
+    },
+    {
+        "date": "2022-02-20",
+        "tunnelMovements": "",
+        "overpassMovements": "222660"
+    },
+    {
+        "date": "2022-02-27",
+        "tunnelMovements": "",
+        "overpassMovements": "230130"
+    },
+    {
+        "date": "2022-03-06",
+        "tunnelMovements": "",
+        "overpassMovements": "234300"
+    },
+    {
+        "date": "2022-03-13",
+        "tunnelMovements": "",
+        "overpassMovements": "233020"
+    },
+    {
+        "date": "2022-03-20",
+        "tunnelMovements": "",
+        "overpassMovements": "239990"
+    },
+    {
+        "date": "2022-03-27",
+        "tunnelMovements": "",
+        "overpassMovements": "242830"
+    },
+    {
+        "date": "2022-04-03",
+        "tunnelMovements": "",
+        "overpassMovements": "244380"
+    },
+    {
+        "date": "2022-04-10",
+        "tunnelMovements": "",
+        "overpassMovements": "246950"
+    },
+    {
+        "date": "2022-04-17",
+        "tunnelMovements": "",
+        "overpassMovements": "232910"
+    },
+    {
+        "date": "2022-04-24",
+        "tunnelMovements": "",
+        "overpassMovements": "233560"
+    },
+    {
+        "date": "2022-05-01",
+        "tunnelMovements": "",
+        "overpassMovements": "253470"
+    },
+    {
+        "date": "2022-05-08",
+        "tunnelMovements": "",
+        "overpassMovements": "244540"
+    },
+    {
+        "date": "2022-05-15",
+        "tunnelMovements": "",
+        "overpassMovements": "232590"
+    },
+    {
+        "date": "2022-05-22",
+        "tunnelMovements": "",
+        "overpassMovements": "252400"
+    },
+    {
+        "date": "2022-05-29",
+        "tunnelMovements": "",
+        "overpassMovements": "251210"
+    },
+    {
+        "date": "2022-06-05",
+        "tunnelMovements": "",
+        "overpassMovements": "221250"
+    },
+    {
+        "date": "2022-06-12",
+        "tunnelMovements": "",
+        "overpassMovements": "250400"
+    },
+    {
+        "date": "2022-06-19",
+        "tunnelMovements": "",
+        "overpassMovements": "250890"
+    },
+    {
+        "date": "2022-06-26",
+        "tunnelMovements": "",
+        "overpassMovements": "251580"
+    },
+    {
+        "date": "2022-07-03",
+        "tunnelMovements": "",
+        "overpassMovements": "251130"
+    },
+    {
+        "date": "2022-07-10",
+        "tunnelMovements": "",
+        "overpassMovements": "249780"
+    },
+    {
+        "date": "2022-07-17",
+        "tunnelMovements": "",
+        "overpassMovements": "250150"
+    },
+    {
+        "date": "2022-07-24",
+        "tunnelMovements": "",
+        "overpassMovements": "242240"
+    },
+    {
+        "date": "2022-07-31",
+        "tunnelMovements": "",
+        "overpassMovements": "246240"
+    },
+    {
+        "date": "2022-08-07",
+        "tunnelMovements": "",
+        "overpassMovements": "245770"
+    },
+    {
+        "date": "2022-08-14",
+        "tunnelMovements": "",
+        "overpassMovements": "220850"
+    },
+    {
+        "date": "2022-08-21",
+        "tunnelMovements": "",
+        "overpassMovements": "242090"
+    },
+    {
+        "date": "2022-08-28",
+        "tunnelMovements": "",
+        "overpassMovements": "241670"
+    },
+    {
+        "date": "2022-09-04",
+        "tunnelMovements": "",
+        "overpassMovements": "233800"
+    },
+    {
+        "date": "2022-09-11",
+        "tunnelMovements": "",
+        "overpassMovements": "232300"
+    },
+    {
+        "date": "2022-09-18",
+        "tunnelMovements": "",
+        "overpassMovements": "242650"
+    },
+    {
+        "date": "2022-09-25",
+        "tunnelMovements": "",
+        "overpassMovements": "224560"
+    },
+    {
+        "date": "2022-10-02",
+        "tunnelMovements": "",
+        "overpassMovements": "230810"
+    },
+    {
+        "date": "2022-10-09",
+        "tunnelMovements": "",
+        "overpassMovements": "235780"
+    },
+    {
+        "date": "2022-10-16",
+        "tunnelMovements": "",
+        "overpassMovements": "235060"
+    },
+    {
+        "date": "2022-10-23",
+        "tunnelMovements": "",
+        "overpassMovements": "229710"
+    },
+    {
+        "date": "2022-10-30",
+        "tunnelMovements": "",
+        "overpassMovements": "205920"
+    }
+]
