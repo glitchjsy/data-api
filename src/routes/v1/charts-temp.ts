@@ -21,5 +21,4 @@ router.get("/driving-test-results", cache("1 hour", onlyApiSuccess), async (req,
     return res.json(drivingTestJson);
 });
 
-
 export default router;

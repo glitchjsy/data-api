@@ -9,6 +9,7 @@ import productRecallsRoute from "./routes/v1/product-recalls";
 import toiletsRoute from "./routes/v1/toilets";
 import eatsafeRoute from "./routes/v1/eatsafe";
 import busesRoute from "./routes/v1/bus";
+import clsQueuesRoute from "./routes/v1/cls-queues";
 import tempChartsRoute from "./routes/v1/charts-temp";
 import { ErrorCode } from "./utils/errors/ErrorCode";
 import { RouteError } from "./utils/errors/RouteError";
@@ -40,6 +41,7 @@ app.use("/v1/product-recalls", productRecallsRoute);
 app.use("/v1/toilets", toiletsRoute);
 app.use("/v1/bus", busesRoute);
 app.use("/v1/eatsafe", eatsafeRoute);
+app.use("/v1/cls-queues", clsQueuesRoute);
 
 // Temporary route for hosting chart data that isn't actually
 app.use("/v1/charts-temp", tempChartsRoute);

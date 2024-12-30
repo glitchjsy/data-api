@@ -161,3 +161,15 @@ CREATE TABLE `productRecalls` (
     `websiteUrl` varchar(250),
     PRIMARY KEY (`id`)
 );
+
+CREATE TABLE `liveClsQueuesData` (
+    `id` int auto_increment NOT NULL,
+    `createdAt` timestamp NOT NULL,
+    `name` varchar(50) NOT NULL,
+    `queueId` int NOT NULL,
+    `color` varchar(7) NOT NULL,
+    `waiting` int NOT NULL,
+    `waitingMinutes` int NOT NULL,
+    `open` boolean NOT NULL,
+    PRIMARY KEY (`id`)
+);
