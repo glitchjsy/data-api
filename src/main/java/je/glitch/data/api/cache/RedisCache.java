@@ -79,6 +79,24 @@ public class RedisCache {
         return getBasicData("data-driving-test-results:json");
     }
 
+    public boolean checkFetcherHeartbeat() {
+        try (Jedis jedis = pool.getResource()) {
+            String redisData = jedis.get("data-fetcher-heartbeat");
+            long keyTimestamp = Long.parseLong(redisData);
+            long currentTime = System.currentTimeMillis();
+
+            // Check if time in redis is more than 5 minutes ago
+            if (currentTime - keyTimestamp > 5 * 60 * 1000) {
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+
     private JsonElement getBasicData(String key) {
         try (Jedis jedis = pool.getResource()) {
             String rawData = jedis.get(key);

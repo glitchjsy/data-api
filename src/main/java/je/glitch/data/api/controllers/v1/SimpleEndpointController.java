@@ -6,6 +6,8 @@ import je.glitch.data.api.cache.RedisCache;
 import je.glitch.data.api.database.MySQLConnection;
 import lombok.RequiredArgsConstructor;
 
+import java.util.Map;
+
 @RequiredArgsConstructor
 public class SimpleEndpointController {
     private final MySQLConnection connection;
@@ -37,5 +39,12 @@ public class SimpleEndpointController {
 
     public void handleGetDrivingResultsChart(Context ctx) {
         ctx.json(cache.getDrivingTestResultsChartData());
+    }
+
+    public void handleGetFetcherHeartbeat(Context ctx) {
+        boolean alive = cache.checkFetcherHeartbeat();
+
+        ctx.status(alive ? 200 : 503);
+        ctx.result(alive ? "OK" : "NOT OK");
     }
 }

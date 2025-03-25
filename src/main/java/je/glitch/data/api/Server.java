@@ -64,6 +64,7 @@ public class Server {
         }).start(8081);
 
         app.get("/health", ctx -> ctx.result("OK"));
+        app.get("/health/fetcher", simpleEndpointController::handleGetFetcherHeartbeat);
 
         app.get("/v1/carparks", carparkController::handleGetCarparks);
         app.get("/v1/carparks/spaces", carparkController::handleGetLiveSpaces);
