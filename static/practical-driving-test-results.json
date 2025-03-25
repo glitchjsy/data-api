@@ -1,77 +1,77 @@
 [
-    {
-        "date": "1975",
-        "totalPassed": "2933",
-        "totalFailed": "833"
-    },
-    {
-        "date": "1980",
-        "totalPassed": "3255",
-        "totalFailed": "1033"
-    },
-    {
-        "date": "1985",
-        "totalPassed": "2787",
-        "totalFailed": "1420"
-    },
-    {
-        "date": "1990",
-        "totalPassed": "2659",
-        "totalFailed": "1723"
-    },
-    {
-        "date": "1995",
-        "totalPassed": "2231",
-        "totalFailed": "2326"
-    },
-    {
-        "date": "2000",
-        "totalPassed": "1392",
-        "totalFailed": "1025"
-    },
-    {
-        "date": "2005",
-        "totalPassed": "1547",
-        "totalFailed": "1114"
-    },
-    {
-        "date": "2010",
-        "totalPassed": "1952",
-        "totalFailed": "989"
-    },
-    {
-        "date": "2011",
-        "totalPassed": "1975",
-        "totalFailed": "992"
-    },
-    {
-        "date": "2012",
-        "totalPassed": "2046",
-        "totalFailed": "882"
-    },
-    {
-        "date": "2013",
-        "totalPassed": "1977",
-        "totalFailed": "864"
-    },
-    {
-        "date": "2014",
-        "totalPassed": "1985",
-        "totalFailed": "807"
-    },
-    {
-        "date": "2015",
-        "totalPassed": "2065",
-        "totalFailed": "817"
-    },
-    {
-        "date": "2016",
-        "totalPassed": "2046",
-        "totalFailed": "826"
-    },
-    {
-        "date": "2017",
-        "totalPassed": "1761",
-        "totalFailed": "664"
-    }
+  {
+    "date": "1975",
+    "totalPassed": "2933",
+    "totalFailed": "833"
+  },
+  {
+    "date": "1980",
+    "totalPassed": "3255",
+    "totalFailed": "1033"
+  },
+  {
+    "date": "1985",
+    "totalPassed": "2787",
+    "totalFailed": "1420"
+  },
+  {
+    "date": "1990",
+    "totalPassed": "2659",
+    "totalFailed": "1723"
+  },
+  {
+    "date": "1995",
+    "totalPassed": "2231",
+    "totalFailed": "2326"
+  },
+  {
+    "date": "2000",
+    "totalPassed": "1392",
+    "totalFailed": "1025"
+  },
+  {
+    "date": "2005",
+    "totalPassed": "1547",
+    "totalFailed": "1114"
+  },
+  {
+    "date": "2010",
+    "totalPassed": "1952",
+    "totalFailed": "989"
+  },
+  {
+    "date": "2011",
+    "totalPassed": "1975",
+    "totalFailed": "992"
+  },
+  {
+    "date": "2012",
+    "totalPassed": "2046",
+    "totalFailed": "882"
+  },
+  {
+    "date": "2013",
+    "totalPassed": "1977",
+    "totalFailed": "864"
+  },
+  {
+    "date": "2014",
+    "totalPassed": "1985",
+    "totalFailed": "807"
+  },
+  {
+    "date": "2015",
+    "totalPassed": "2065",
+    "totalFailed": "817"
+  },
+  {
+    "date": "2016",
+    "totalPassed": "2046",
+    "totalFailed": "826"
+  },
+  {
+    "date": "2017",
+    "totalPassed": "1761",
+    "totalFailed": "664"
+  }
 ]

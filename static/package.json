@@ -1,0 +1,14 @@
+{
+  "name": "@glitchjsy/data-api-static",
+  "version": "1.0.0",
+  "description": "Quick and dirty way to add json to redis",
+  "main": "create-redis-keys.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Luke <luke@glitch.je>",
+  "license": "MIT",
+  "dependencies": {
+    "redis": "4.6.14"
+  }
+}
