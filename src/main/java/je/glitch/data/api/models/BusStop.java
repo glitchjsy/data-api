@@ -11,8 +11,8 @@ public class BusStop {
     private final String createdAt;
     private final String name;
     private final String code;
-    private final long latitude;
-    private final long longitude;
+    private final double latitude;
+    private final double longitude;
     private final boolean shelter;
 
     public static BusStop of(ResultSet result) throws SQLException {
@@ -21,8 +21,8 @@ public class BusStop {
                 result.getString("createdAt"),
                 result.getString("name"),
                 result.getString("code"),
-                result.getLong("latitude"),
-                result.getLong("longitude"),
+                result.getDouble("latitude"),
+                result.getDouble("longitude"),
                 result.getBoolean("shelter")
         );
     }
