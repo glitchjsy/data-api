@@ -41,6 +41,10 @@ public class SimpleEndpointController {
         ctx.json(cache.getDrivingTestResultsChartData());
     }
 
+    public void handleGetMonthlyRainfallChart(Context ctx) {
+        ctx.json(cache.getMonthlyRainfallData());
+    }
+
     public void handleGetFetcherHeartbeat(Context ctx) {
         boolean alive = cache.checkFetcherHeartbeat();
 
