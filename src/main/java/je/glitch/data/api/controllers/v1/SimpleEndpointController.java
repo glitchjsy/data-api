@@ -47,8 +47,6 @@ public class SimpleEndpointController {
 
     public void handleGetFetcherHeartbeat(Context ctx) {
         boolean alive = cache.checkFetcherHeartbeat();
-
         ctx.status(alive ? 200 : 503);
-        ctx.result(alive ? "OK" : "NOT OK");
     }
 }
