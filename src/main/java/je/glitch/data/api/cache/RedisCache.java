@@ -35,7 +35,7 @@ public class RedisCache {
                     JsonObject obj = element.getAsJsonObject();
                     LiveParkingSpace space = new LiveParkingSpace(
                             null,
-                            null,
+                            data.get("timestamp").getAsString(),
                             obj.get("name").getAsString(),
                             obj.get("code").getAsString(),
                             obj.get("spaces").getAsInt(),

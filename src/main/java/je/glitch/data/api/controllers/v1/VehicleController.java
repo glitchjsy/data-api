@@ -3,6 +3,7 @@ package je.glitch.data.api.controllers.v1;
 import com.google.gson.JsonObject;
 import io.javalin.http.Context;
 import je.glitch.data.api.database.MySQLConnection;
+import je.glitch.data.api.models.ApiResponse;
 import je.glitch.data.api.utils.ErrorResponse;
 import je.glitch.data.api.utils.ErrorType;
 import je.glitch.data.api.utils.VehiclePlateHelper;
@@ -31,7 +32,7 @@ public class VehicleController {
         String endDate = ctx.queryParam("endDate");
 
         Map<String, Object> stats = connection.getVehicleTable().getStats(dateType, startDate, endDate);
-        ctx.json(stats);
+        ctx.json(new ApiResponse<>(stats));
     }
 
     public void handleGetColors(Context ctx) throws SQLException {
@@ -40,7 +41,7 @@ public class VehicleController {
         String endDate = ctx.queryParam("endDate");
 
         Map<String, Object> stats = connection.getVehicleTable().getColors(dateType, startDate, endDate);
-        ctx.json(stats);
+        ctx.json(new ApiResponse<>(stats));
     }
 
     public void handleGetMakes(Context ctx) throws SQLException {
@@ -49,7 +50,7 @@ public class VehicleController {
         String endDate = ctx.queryParam("endDate");
 
         Map<String, Object> stats = connection.getVehicleTable().getMakes(dateType, startDate, endDate);
-        ctx.json(stats);
+        ctx.json(new ApiResponse<>(stats));
     }
 
     public void handleGetModels(Context ctx) throws SQLException {
@@ -67,7 +68,7 @@ public class VehicleController {
                 for (VehiclePlateHelper.VehicleData data : vehicleData) {
                     output.addProperty(data.getKey(), data.getValue());
                 }
-                ctx.json(output);
+                ctx.json(new ApiResponse<>(output));
             } else {
                 ctx.status(400).json(new ErrorResponse(ErrorType.INVALID_REQUEST, "Invalid plate"));
             }

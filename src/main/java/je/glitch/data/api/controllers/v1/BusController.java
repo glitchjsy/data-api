@@ -2,6 +2,7 @@ package je.glitch.data.api.controllers.v1;
 
 import io.javalin.http.Context;
 import je.glitch.data.api.database.MySQLConnection;
+import je.glitch.data.api.models.ApiResponse;
 import je.glitch.data.api.models.BusStop;
 import lombok.RequiredArgsConstructor;
 
@@ -13,6 +14,6 @@ public class BusController {
 
     public void handleGetStops(Context ctx) {
         List<BusStop> stops = connection.getBusTable().getBusStops();
-        ctx.json(stops);
+        ctx.json(new ApiResponse<>(stops));
     }
 }

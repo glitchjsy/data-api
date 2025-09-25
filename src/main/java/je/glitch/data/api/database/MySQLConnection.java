@@ -24,5 +24,6 @@ public class MySQLConnection {
         dataSource.setJdbcUrl("jdbc:mysql://localhost/opendata");
         dataSource.setUsername("root");
         dataSource.setPassword("password123");
+        dataSource.setMaxLifetime(1800000);
     }
 }

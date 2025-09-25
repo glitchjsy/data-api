@@ -61,10 +61,10 @@ public class Server {
                     it.anyHost();
                 });
             });
-        }).start(8081);
+        }).start(8080);
 
-        app.get("/health", ctx -> ctx.status(200));
-        app.get("/health/fetcher", simpleEndpointController::handleGetFetcherHeartbeat);
+        app.head("/health", ctx -> ctx.status(200));
+        app.head("/health/fetcher", simpleEndpointController::handleGetFetcherHeartbeat);
 
         app.get("/v1/carparks", carparkController::handleGetCarparks);
         app.get("/v1/carparks/spaces", carparkController::handleGetLiveSpaces);
