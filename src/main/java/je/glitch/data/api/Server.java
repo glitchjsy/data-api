@@ -106,7 +106,8 @@ public class Server {
             config.showJavalinBanner = false;
             config.bundledPlugins.enableCors(cors -> {
                 cors.addRule(it -> {
-                    it.anyHost();
+                    it.allowHost("http://localhost:3000", "http://127.0.0.1:3000", "https://data.glitch.je", "https://opendata.je");
+                    it.allowCredentials = true;
                 });
             });
             config.jetty.modifyServletContextHandler(handler -> handler.setSessionHandler(fileSessionHandler()));
@@ -114,6 +115,11 @@ public class Server {
 
         app.before(ctx -> {
             String path = ctx.path();
+
+            // Let CORS plugin handle it
+            if (ctx.method().name().equalsIgnoreCase("OPTIONS")) {
+                return;
+            }
 
             if (path.startsWith("/admin")) {
                 Session session = ctx.sessionAttribute("session");
