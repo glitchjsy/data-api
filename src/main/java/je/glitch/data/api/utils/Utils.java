@@ -3,6 +3,8 @@ package je.glitch.data.api.utils;
 import lombok.Data;
 
 import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.lang.management.RuntimeMXBean;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -12,8 +14,10 @@ import java.util.List;
 import java.util.regex.Pattern;
 
 public class Utils {
-
+    public static final String TEMP_ADMIN_API_KEY = "CHANGEME";
     private static final Pattern DATE_FORMAT = Pattern.compile("\\d{4}/\\d{2}/\\d{2}"); // Regex for YYYY/MM/DD format
+
+    private static final RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
 
     public static QueryDateResult queryDateSql(String dateField, String startDate, String endDate) {
         List<String> conditions = new ArrayList<>();
@@ -61,6 +65,26 @@ public class Utils {
         }
 
         return client.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+    }
+
+    public static String getUptimeString() {
+        long uptimeMillis = runtimeBean.getUptime();
+        long seconds = uptimeMillis / 1000;
+
+        long days = seconds / (24 * 3600);
+        long hours = (seconds % (24 * 3600)) / 3600;
+        long minutes = (seconds % 3600) / 60;
+        long secs = seconds % 60;
+
+        if (days > 0) {
+            return String.format("%dd, %dh, %dm", days, hours, minutes);
+        } else if (hours > 0) {
+            return String.format("%dh, %dm, %ds", hours, minutes, secs);
+        } else if (minutes > 0) {
+            return String.format("%dm, %ds", minutes, secs);
+        } else {
+            return String.format("%ds", secs);
+        }
     }
 
     @Data

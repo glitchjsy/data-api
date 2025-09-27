@@ -177,8 +177,32 @@ CREATE TABLE `liveClsQueuesData` (
 CREATE TABLE `users` (
     `id` varchar(40) NOT NULL,
     `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
+    `updatedAt` timestamp DEFAULT current_timestamp ON UPDATE current_timestamp,
     `email` varchar(200) NOT NULL,
     `password` varchar(60) NOT NULL,
     `siteAdmin` boolean DEFAULT 0 NOT NULL,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `apiTokens` (
+    `id` varchar(40) NOT NULL,
+    `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
+    `userId` varchar(40) NOT NULL,
+    `token` varchar(40) NOT NULL,
+    `summary` varchar(200),
+    FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+);
+
+CREATE TABLE `apiRequests` (
+    `id` varchar(40) NOT NULL,
+    `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
+    `method` varchar(10) NOT NULL,
+    `path` varchar(200) NOT NULL,
+    `statusCode` int NOT NULL,
+    `ipAddress` varchar(45) NOT NULL,
+    `userAgent` varchar(255),
+    `apiTokenId` varchar(40),
+    FOREIGN KEY (`apiTokenId`) REFERENCES `apiTokens`(`id`) ON DELETE SET NULL,
     PRIMARY KEY (`id`)
 );

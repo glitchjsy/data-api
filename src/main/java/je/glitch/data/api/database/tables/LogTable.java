@@ -1,0 +1,106 @@
+package je.glitch.data.api.database.tables;
+
+import com.zaxxer.hikari.HikariDataSource;
+import je.glitch.data.api.models.ApiRequestStats;
+import je.glitch.data.api.models.DailyRequestStat;
+import lombok.RequiredArgsConstructor;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@RequiredArgsConstructor
+public class LogTable implements ITable {
+    private final HikariDataSource dataSource;
+
+    public boolean trackRequest(String method, String path, int statusCode, String ipAddress, String userAgent, String apiTokenId) {
+        String sql = """
+        INSERT INTO apiRequests (id, method, path, statusCode, ipAddress, userAgent, apiTokenId)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+        """;
+
+        String id = UUID.randomUUID().toString();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setString(1, id);
+            stmt.setString(2, method);
+            stmt.setString(3, path);
+            stmt.setInt(4, statusCode);
+            stmt.setString(5, ipAddress);
+            stmt.setString(6, userAgent);
+
+            if (apiTokenId != null) {
+                stmt.setString(7, apiTokenId);
+            } else {
+                stmt.setNull(7, java.sql.Types.VARCHAR);
+            }
+            return stmt.executeUpdate() > 0;
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+
+    public ApiRequestStats getRequestStats() {
+        String sql = """
+            SELECT
+                (SELECT COUNT(*) FROM apiRequests) AS totalAllTime,
+                (SELECT COUNT(*) FROM apiRequests WHERE createdAt >= NOW() - INTERVAL 1 DAY) AS total24Hours,
+                (SELECT COUNT(*) FROM apiRequests WHERE createdAt >= NOW() - INTERVAL 7 DAY) AS total7Days,
+                (SELECT COUNT(*) FROM apiRequests WHERE createdAt >= NOW() - INTERVAL 30 DAY) AS total30Days
+        """;
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            if (rs.next()) {
+                return new ApiRequestStats(
+                        rs.getLong("totalAllTime"),
+                        rs.getLong("total24Hours"),
+                        rs.getLong("total7Days"),
+                        rs.getLong("total30Days")
+                );
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return new ApiRequestStats(0, 0, 0, 0);
+    }
+
+    public List<DailyRequestStat> getDailyStatsForMonth(int year, int month) {
+        String sql = """
+            SELECT DATE(createdAt) AS day, COUNT(*) AS total
+            FROM apiRequests
+            WHERE YEAR(createdAt) = ? AND MONTH(createdAt) = ?
+            GROUP BY DATE(createdAt)
+            ORDER BY day ASC
+        """;
+
+        List<DailyRequestStat> stats = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            stmt.setInt(1, year);
+            stmt.setInt(2, month);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    stats.add(new DailyRequestStat(
+                            rs.getString("day"),
+                            rs.getLong("total")
+                    ));
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+        return stats;
+    }
+}

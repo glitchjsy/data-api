@@ -12,7 +12,8 @@ public enum ErrorType {
     NOT_AUTHORIZED("Missing authentication"),
     FORBIDDEN("You are not authorised to perform that action"),
     SERVER_ERROR("An unknown error has occurred"),
-    RATE_LIMITED("You have exceeded the rate limit");
+    RATE_LIMITED("You have exceeded the rate limit"),
+    ALREADY_EXISTS("The entity you are creating already exists");
 
     private final String defaultMessage;
 }

@@ -1,9 +1,7 @@
 package je.glitch.data.api.database;
 
 import com.zaxxer.hikari.HikariDataSource;
-import je.glitch.data.api.database.tables.BusTable;
-import je.glitch.data.api.database.tables.CarparkTable;
-import je.glitch.data.api.database.tables.VehicleTable;
+import je.glitch.data.api.database.tables.*;
 import lombok.Getter;
 
 @Getter
@@ -12,12 +10,18 @@ public class MySQLConnection {
     private final CarparkTable carparkTable;
     private final VehicleTable vehicleTable;
     private final BusTable busTable;
+    private final ApiKeyTable apiKeyTable;
+    private final UserTable userTable;
+    private final LogTable logTable;
 
     public MySQLConnection() {
         this.connect();
         this.carparkTable = new CarparkTable(dataSource);
         this.vehicleTable = new VehicleTable(dataSource);
         this.busTable = new BusTable(dataSource);
+        this.apiKeyTable = new ApiKeyTable(dataSource);
+        this.userTable = new UserTable(dataSource);
+        this.logTable = new LogTable(dataSource);
     }
 
     private void connect() {
