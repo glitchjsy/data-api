@@ -43,6 +43,10 @@ public class SimpleEndpointController {
         ctx.json(new ApiResponse<>(cache.getMonthlyRainfallData()));
     }
 
+    public void handleGetRegisteredVehiclesChart(Context ctx) {
+        ctx.json(new ApiResponse<>(cache.getRegisteredVehiclesChartData()));
+    }
+
     public void handleGetFetcherHeartbeat(Context ctx) {
         boolean alive = cache.checkFetcherHeartbeat();
         ctx.status(alive ? 200 : 503);

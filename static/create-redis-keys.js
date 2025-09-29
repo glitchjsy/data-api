@@ -6,6 +6,7 @@ const recyclingJson = require("./recycling.json");
 const roadTrafficJson = require("./road-traffic-weekly.json");
 const toiletsJson = require("./toilets.json");
 const monthlyRainfallJson = require("./monthly-rainfall.json");
+const registeredVehiclesJson = require("./registered-vehicles.json");
 
 const client = redis.createClient({
     legacyMode: true
@@ -32,3 +33,4 @@ addToRedis("data-driving-test-results:json", drivingTestJson);
 addToRedis("data-recycling:json", recyclingJson);
 addToRedis("data-road-traffic:json", roadTrafficJson);
 addToRedis("data-monthly-rainfall:json", monthlyRainfallJson);
+addToRedis("data-registered-vehicles:json", registeredVehiclesJson);

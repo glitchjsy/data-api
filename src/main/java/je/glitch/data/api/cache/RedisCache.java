@@ -83,6 +83,10 @@ public class RedisCache {
         return getBasicData("data-monthly-rainfall:json");
     }
 
+    public JsonElement getRegisteredVehiclesChartData() {
+        return getBasicData("data-registered-vehicles:json");
+    }
+
     public boolean checkFetcherHeartbeat() {
         try (Jedis jedis = pool.getResource()) {
             String redisData = jedis.get("data-fetcher-heartbeat");

@@ -18,3 +18,4 @@ The keys which must be created manually can be done by running the `create-redis
 - `data-road-traffic:json` - Static road traffic data, must be created manually
 - `data-driving-test-results:json` - Static practical driving test results, must be created manually
 - `data-monthly-rainfall:json` - Static monthly rainfall data, must be created manually
+- `data-registered-vehicles:json` - Static registered vehicle counts per year, must be created manually
