@@ -4,14 +4,12 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import je.glitch.data.api.Server;
-import je.glitch.data.api.models.BusStop;
 import je.glitch.data.api.models.LiveParkingSpace;
-import je.glitch.data.api.models.PublicToilet;
-import je.glitch.data.api.models.RecyclingCentre;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +33,7 @@ public class RedisCache {
                     JsonObject obj = element.getAsJsonObject();
                     LiveParkingSpace space = new LiveParkingSpace(
                             null,
-                            data.get("timestamp").getAsString(),
+                            Timestamp.valueOf(data.get("timestamp").getAsString()),
                             obj.get("name").getAsString(),
                             obj.get("code").getAsString(),
                             obj.get("spaces").getAsInt(),

@@ -7,15 +7,17 @@ import lombok.Data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Data
 public class Carpark {
     private final String id;
-    private final String createdAt;
+    private final Timestamp createdAt;
     private final String name;
     private final String payByPhoneCode;
     private final Company owner;
@@ -35,7 +37,7 @@ public class Carpark {
     public static Carpark of(ResultSet result) throws SQLException {
         return new Carpark(
                 result.getString("id"),
-                result.getString("createdAt"),
+                result.getTimestamp("createdAt"),
                 result.getString("name"),
                 result.getString("payByPhoneCode"),
                 new Company(result.getString("ownerId"), result.getString("ownerName")),

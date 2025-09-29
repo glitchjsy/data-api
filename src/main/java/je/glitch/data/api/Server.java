@@ -36,6 +36,7 @@ public class Server {
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
             .serializeNulls()
             // Temporary hack
             .addSerializationExclusionStrategy(new ExclusionStrategy() {

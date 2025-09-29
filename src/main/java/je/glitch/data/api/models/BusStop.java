@@ -4,11 +4,12 @@ import lombok.Data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 @Data
 public class BusStop {
     private final String id;
-    private final String createdAt;
+    private final Timestamp createdAt;
     private final String name;
     private final String code;
     private final double latitude;
@@ -18,7 +19,7 @@ public class BusStop {
     public static BusStop of(ResultSet result) throws SQLException {
         return new BusStop(
                 result.getString("id"),
-                result.getString("createdAt"),
+                result.getTimestamp("createdAt"),
                 result.getString("name"),
                 result.getString("code"),
                 result.getDouble("latitude"),
