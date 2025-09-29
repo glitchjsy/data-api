@@ -30,11 +30,11 @@ public class ErrorController {
     }
 
     public void handleNotFound(Context ctx) {
-        ctx.status(404).json(new ErrorResponse(ErrorType.NOT_FOUND, "Route not found"));
+        ctx.status(404).json(new ErrorResponse(ErrorType.NOT_FOUND));
     }
 
     public void handleServerError(Context ctx) {
-        ctx.status(500).json(new ErrorResponse(ErrorType.SERVER_ERROR, "An unknown error has occurred"));
+        ctx.status(500).json(new ErrorResponse(ErrorType.SERVER_ERROR));
     }
 
     public void handleNotAuthorized(Context ctx) {

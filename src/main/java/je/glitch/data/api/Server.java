@@ -20,6 +20,7 @@ import je.glitch.data.api.utils.ErrorResponse;
 import je.glitch.data.api.utils.ErrorType;
 import je.glitch.data.api.utils.HttpException;
 import je.glitch.data.api.utils.Utils;
+import org.eclipse.jetty.http.HttpCookie;
 import org.eclipse.jetty.server.session.DefaultSessionCache;
 import org.eclipse.jetty.server.session.FileSessionDataStore;
 import org.eclipse.jetty.server.session.SessionCache;
@@ -212,6 +213,8 @@ public class Server {
         SessionCache sessionCache = new DefaultSessionCache(sessionHandler);
         sessionCache.setSessionDataStore(fileSessionDataStore());
         sessionHandler.setSessionCache(sessionCache);
+        sessionHandler.setSecureRequestOnly(false);
+        sessionHandler.setSameSite(HttpCookie.SameSite.NONE);
         sessionHandler.setHttpOnly(true);
         // make additional changes to your SessionHandler here
         return sessionHandler;

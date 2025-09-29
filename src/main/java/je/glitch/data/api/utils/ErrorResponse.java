@@ -4,15 +4,17 @@ import lombok.Getter;
 
 @Getter
 public class ErrorResponse {
-    private final ErrorType type;
-    private final String error;
+    private final ErrorType error;
+    private final int status;
+    private final String message;
 
     public ErrorResponse(ErrorType type) {
         this(type, type.getDefaultMessage());
     }
 
     public ErrorResponse(ErrorType type, String error) {
-        this.type = type;
-        this.error = error;
+        this.error = type;
+        this.message = error;
+        this.status = type.getStatusCode();
     }
 }
