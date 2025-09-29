@@ -1,1 +1,1 @@
-This is a temporary solution to reduce the workload from migrating to the Node.js backend to Java. This data is stored in Redis, but most of it will be migrated to MySQL in the future.
+This is a temporary solution to reduce the workload from migrating the Node.js backend to Java. This data is stored in Redis, but most of it will be migrated to MySQL in the future.
