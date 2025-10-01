@@ -106,7 +106,6 @@ CREATE TABLE `publicToilets` (
     `longitude` decimal(11, 8),
     `tenure` varchar(20) NOT NULL,
     `ownerId` varchar(40),
-    `buildDate` int,
     `female` boolean NOT NULL,
     `femaleCubicles` int,
     `femaleHandDryers` int,
