@@ -10,6 +10,7 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 
 import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class RedisCache {
                     JsonObject obj = element.getAsJsonObject();
                     LiveParkingSpace space = new LiveParkingSpace(
                             null,
-                            Timestamp.valueOf(data.get("timestamp").getAsString()),
+                            Timestamp.from(Instant.parse(data.get("timestamp").getAsString())),
                             obj.get("name").getAsString(),
                             obj.get("code").getAsString(),
                             obj.get("spaces").getAsInt(),

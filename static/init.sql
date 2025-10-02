@@ -66,18 +66,6 @@ CREATE TABLE `vehicles` (
 
 ALTER TABLE `vehicles` ADD INDEX `vehicle_hash_index` (`hash`);
 
-CREATE TABLE `publicAccessDefibrillators` (
-    `id` varchar(40) DEFAULT (uuid()),
-    `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
-    `location` varchar(80) NOT NULL,
-    `parish` varchar(30) NOT NULL,
-    `padNumber` int,
-    `latitude` decimal(10, 8),
-    `longitude` decimal(11, 8),
-    `notes` text,
-    PRIMARY KEY (`id`)
-);
-
 CREATE TABLE `recyclingCentres` (
     `id` varchar(40) DEFAULT (uuid()),
     `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
