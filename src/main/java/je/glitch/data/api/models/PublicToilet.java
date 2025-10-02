@@ -17,7 +17,6 @@ public class PublicToilet {
     private final String parish;
     private final double latitude;
     private final double longitude;
-    private final PublicToiletTenure tenure;
     private final Integer buildDate;
     private final List<PublicToiletFacilities> facilities;
     private final Company owner;
