@@ -5,6 +5,9 @@ import je.glitch.data.api.cache.RedisCache;
 import je.glitch.data.api.database.MySQLConnection;
 import je.glitch.data.api.models.ApiResponse;
 import je.glitch.data.api.models.Carpark;
+import je.glitch.data.api.models.carpark.BusiestCarpark;
+import je.glitch.data.api.models.carpark.CarparkAvailability;
+import je.glitch.data.api.models.carpark.CarparkFullDay;
 import je.glitch.data.api.utils.ErrorResponse;
 import je.glitch.data.api.models.ExtendedLiveParkingSpace;
 import je.glitch.data.api.models.LiveParkingSpace;
@@ -96,4 +99,20 @@ public class CarparkController {
         List<String> dates = connection.getCarparkTable().getLiveSpacesDates();
         ctx.json(new ApiResponse<>(dates));
     }
+
+    public void handleGetParkingStats(Context ctx) {
+        List<BusiestCarpark> busiest = connection.getCarparkTable().getBusiestCarparks();
+        List<CarparkFullDay> fullDays = connection.getCarparkTable().getMostCommonFullDays();
+        List<CarparkAvailability> availabilityLastYear = connection.getCarparkTable().getAvailabilityLastYear();
+        List<CarparkAvailability> availabilityThisYear = connection.getCarparkTable().getAvailabilityThisYear();
+
+        Map<String, Object> stats = new HashMap<>();
+        stats.put("busiestCarparks", busiest);
+        stats.put("mostCommonFullDays", fullDays);
+        stats.put("availabilityLastYear", availabilityLastYear);
+        stats.put("availabilityThisYear", availabilityThisYear);
+
+        ctx.json(new ApiResponse<>(stats));
+    }
+
 }

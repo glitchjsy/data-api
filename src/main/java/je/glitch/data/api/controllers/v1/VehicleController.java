@@ -61,18 +61,14 @@ public class VehicleController {
     public void handleGetPlate(Context ctx) {
         try {
             String plate = ctx.pathParam("plate");
-            List<VehiclePlateHelper.VehicleData> vehicleData = VehiclePlateHelper.parseVehicleInfo(plate);
-            JsonObject output = new JsonObject();
+            JsonObject vehicleData = VehiclePlateHelper.parseVehicleInfo(plate, connection);
 
-            if (vehicleData != null) {
-                for (VehiclePlateHelper.VehicleData data : vehicleData) {
-                    output.addProperty(data.getKey(), data.getValue());
-                }
-                ctx.json(new ApiResponse<>(output));
-            } else {
+            if (vehicleData == null) {
                 ctx.status(400).json(new ErrorResponse(ErrorType.INVALID_REQUEST, "Invalid plate"));
+                return;
             }
-        } catch (IOException | InterruptedException | NoSuchAlgorithmException | KeyManagementException ex) {
+            ctx.json(vehicleData);
+        } catch (Exception ex) {
             log.error("An error occurred while fetching plate information", ex);
             ctx.status(500).json(new ErrorResponse(ErrorType.SERVER_ERROR, "An error has occurred"));
         }

@@ -21,7 +21,6 @@ public class Vehicle {
     private final String weight;
     private final int co2Emissions;
     private final VehicleFuelType fuelType;
-    private final String hash;
 
     public static Vehicle of(ResultSet result) throws SQLException {
         return new Vehicle(
@@ -35,8 +34,7 @@ public class Vehicle {
                 result.getInt("cylinderCapacity"),
                 result.getString("weight"),
                 result.getInt("co2Emissions"),
-                VehicleFuelType.valueOf(result.getString("fuelType")),
-                result.getString("hash")
+                VehicleFuelType.valueOf(result.getString("fuelType"))
         );
     }
 }

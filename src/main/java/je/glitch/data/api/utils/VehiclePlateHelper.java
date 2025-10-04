@@ -1,5 +1,8 @@
 package je.glitch.data.api.utils;
 
+import com.google.gson.JsonObject;
+import je.glitch.data.api.database.MySQLConnection;
+import je.glitch.data.api.models.enums.VehicleFuelType;
 import lombok.Data;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,19 +21,39 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class VehiclePlateHelper {
     private static final String GOV_URL = "https://vehicle-search.gov.je";
     private static final String SEARCH_URL = GOV_URL + "/search";
 
+    private static final Map<String, VehicleFuelType> FUEL_TYPE_MAP = Map.of(
+            "Petrol", VehicleFuelType.PETROL,
+            "Heavy Oil", VehicleFuelType.HEAVY_OIL,
+            "Electric", VehicleFuelType.ELECTRIC,
+            "Hybrid Electric", VehicleFuelType.HYBRID_ELECTRIC,
+            "Gas", VehicleFuelType.GAS,
+            "Diesel Electric", VehicleFuelType.DIESEL_ELECTRIC,
+            "Gas Bi Fuel", VehicleFuelType.GAS_BI_FUEL,
+            "Steam", VehicleFuelType.STEAM,
+            "Unknown", VehicleFuelType.UNKNOWN
+    );
+
+    private static Integer unknownToNull(String value) {
+        if (value == null) return null;
+        return value.equalsIgnoreCase("Not known") ? null : Utils.parseInteger(value);
+    }
+
     /**
      * Parse the vehicle information from the html.
      *
      * @param plate The plate for search for
-     * @return A list of objects containg the vehicle info
+     * @return The vehicle info
      */
-    public static List<VehicleData> parseVehicleInfo(String plate) throws IOException, NoSuchAlgorithmException, InterruptedException, KeyManagementException {
+    public static JsonObject parseVehicleInfo(String plate, MySQLConnection connection) throws Exception {
         Document document = Jsoup.parse(fetchVehicleInfo(plate));
         List<Element> rows = document.getElementsByClass("detail-row");
 
@@ -50,12 +73,48 @@ public class VehiclePlateHelper {
             }
         }
 
-        return vehicleDataList;
+        Map<String, String> temp = vehicleDataList.stream()
+                .collect(Collectors.toMap(d -> d.getKey().toLowerCase(), VehicleData::getValue, (a,b)->b));
+
+        JsonObject json = new JsonObject();
+
+        json.addProperty("make", temp.get("make"));
+        json.addProperty("type", temp.get("type"));
+        json.addProperty("color", temp.get("colour"));
+        json.addProperty("cylinderCapacity", unknownToNull(temp.get("cylinder capacity").replaceAll("\\s*\\(.*\\)", "").trim()));
+        json.addProperty("weight", unknownToNull(temp.get("weight")));
+        json.addProperty("co2Emissions", unknownToNull(temp.get("co₂ emissions")));
+        json.addProperty("fuelType", FUEL_TYPE_MAP.getOrDefault(temp.get("fuel type"), VehicleFuelType.UNKNOWN).name());
+        json.addProperty("firstRegisteredAt", Utils.parseDateToISO(temp.get("date of first registration")));
+        json.addProperty("firstRegisteredInJerseyAt", Utils.parseDateToISO(temp.get("date registered in jersey")));
+
+        String ownersText = temp.get("number of previous owners"); // e.g., "8 Owners (incl. 5 Traders)"
+        int previousOwners = 0;
+        int previousTraders = 0;
+
+        if (ownersText != null) {
+            // Extract the first number for owners
+            Matcher mOwners = Pattern.compile("(\\d+)").matcher(ownersText);
+            if (mOwners.find()) {
+                previousOwners = Integer.parseInt(mOwners.group(1));
+            }
+
+            // Extract the number of traders from "(incl. X Traders)"
+            Matcher mTraders = Pattern.compile("incl\\.\\s*(\\d+)\\s*Traders").matcher(ownersText);
+            if (mTraders.find()) {
+                previousTraders = Integer.parseInt(mTraders.group(1));
+            }
+        }
+
+        json.addProperty("previousOwners", previousOwners);
+        json.addProperty("previousTraders", previousTraders);
+
+        return json;
     }
 
     /**
      * Fetch vehicle information from the Government vehicle search page.
-     * Called from {@link #parseVehicleInfo(String)}
+     * Called from {@link #parseVehicleInfo(String, MySQLConnection)}
      *
      * @param plate The plate to search for
      * @return The html content of the page

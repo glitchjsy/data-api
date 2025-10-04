@@ -182,6 +182,7 @@ public class Server {
         app.get("/v1/defibrillators", simpleEndpointController::handleGetDefibrillators);
         // TODO: Product recalls
 
+        app.get("/v1/charts/parking-stats", carparkController::handleGetParkingStats);
         app.get("/v1/charts/bus-passengers", simpleEndpointController::handleGetBusPassengersChart);
         app.get("/v1/charts/road-traffic", simpleEndpointController::handleGetRoadTrafficChart);
         app.get("/v1/charts/driving-test-results", simpleEndpointController::handleGetDrivingResultsChart);

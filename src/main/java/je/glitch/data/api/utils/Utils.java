@@ -9,8 +9,18 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.time.LocalDate;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.DateTimeParseException;
+import java.time.format.TextStyle;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class Utils {
@@ -85,6 +95,59 @@ public class Utils {
         } else {
             return String.format("%ds", secs);
         }
+    }
+
+    public static String parseDateToISO(String input) {
+        if (input == null || input.isEmpty()) return null;
+
+        // Formatter for full month names, e.g., "February"
+        DateTimeFormatter fullMonthFormatter = new DateTimeFormatterBuilder()
+                .parseCaseInsensitive()
+                .appendPattern("d ")
+                .appendText(ChronoField.MONTH_OF_YEAR, TextStyle.FULL)
+                .appendLiteral(' ')
+                .appendValue(ChronoField.YEAR, 4)
+                .toFormatter(Locale.ENGLISH);
+
+        // Formatter for abbreviated month names, e.g., "Feb"
+        DateTimeFormatter shortMonthFormatter = new DateTimeFormatterBuilder()
+                .parseCaseInsensitive()
+                .appendPattern("d ")
+                .appendText(ChronoField.MONTH_OF_YEAR, TextStyle.SHORT)
+                .appendLiteral(' ')
+                .appendValue(ChronoField.YEAR, 4)
+                .toFormatter(Locale.ENGLISH);
+
+        try {
+            LocalDate date = LocalDate.parse(input, fullMonthFormatter);
+            return date.toString(); // "YYYY-MM-DD"
+        } catch (DateTimeParseException e) {
+            try {
+                LocalDate date = LocalDate.parse(input, shortMonthFormatter);
+                return date.toString();
+            } catch (DateTimeParseException ex) {
+                ex.printStackTrace();
+                return null;
+            }
+        }
+    }
+
+    public static Integer parseInteger(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public static String sha256(String input) throws Exception {
+        MessageDigest md = MessageDigest.getInstance("SHA-256");
+        byte[] hash = md.digest(input.getBytes(StandardCharsets.UTF_8));
+        StringBuilder hex = new StringBuilder();
+        for (byte b : hash) {
+            hex.append(String.format("%02x", b));
+        }
+        return hex.toString();
     }
 
     @Data
