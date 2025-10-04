@@ -246,7 +246,15 @@ public class VehicleTable implements ITable {
             while (rs.next()) {
                 Map<String, Object> row = new HashMap<>();
                 for (int i = 1; i <= meta.getColumnCount(); i++) {
-                    row.put(meta.getColumnName(i), rs.getObject(i));
+                    Object value = rs.getObject(i);
+
+                    // Format date fields to only YYYY-MM-DD
+                    String columnName = meta.getColumnName(i);
+                    if (value != null && (columnName.equals("firstRegisteredAt") || columnName.equals("firstRegisteredInJerseyAt"))) {
+                        value = value.toString().substring(0, 10); // Just the date part
+                    }
+
+                    row.put(meta.getColumnName(i), value);
                 }
                 row.remove("id"); // Exclude the "id" field if needed
                 rows.add(row);

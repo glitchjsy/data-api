@@ -60,7 +60,6 @@ CREATE TABLE `vehicles` (
     `weight` varchar(30),
     `co2Emissions` int,
     `fuelType` varchar(30) NOT NULL,
-    `hash` varchar(100) NOT NULL,
     PRIMARY KEY (`id`)
 );
 

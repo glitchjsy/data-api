@@ -6,13 +6,12 @@ import lombok.Data;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 
 @Data
 public class Vehicle {
     private final int id;
-    private final Timestamp firstRegisteredAt;
-    private final Timestamp firstRegisteredInJerseyAt;
+    private final String firstRegisteredAt;
+    private final String firstRegisteredInJerseyAt;
     private final String make;
     private final String model;
     private final VehicleType type;
@@ -25,8 +24,8 @@ public class Vehicle {
     public static Vehicle of(ResultSet result) throws SQLException {
         return new Vehicle(
                 result.getInt("id"),
-                result.getTimestamp("firstRegisteredAt"),
-                result.getTimestamp("firstRegisteredInJerseyAt"),
+                result.getString("firstRegisteredAt"),
+                result.getString("firstRegisteredInJerseyAt"),
                 result.getString("make"),
                 result.getString("model"),
                 VehicleType.valueOf(result.getString("type")),
