@@ -67,7 +67,7 @@ public class VehicleController {
                 ctx.status(400).json(new ErrorResponse(ErrorType.INVALID_REQUEST, "Invalid plate"));
                 return;
             }
-            ctx.json(vehicleData);
+            ctx.json(new ApiResponse<>(vehicleData));
         } catch (Exception ex) {
             log.error("An error occurred while fetching plate information", ex);
             ctx.status(500).json(new ErrorResponse(ErrorType.SERVER_ERROR, "An error has occurred"));
