@@ -160,6 +160,17 @@ CREATE TABLE `liveClsQueuesData` (
     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `foiRequests` (
+    `id` int NOT NULL,
+    `publishDate` timestamp NOT NULL,
+    `title` varchar(150) NOT NULL,
+    `producer` varchar(250) NOT NULL,
+    `author` varchar(250) NOT NULL,
+    `requestText` mediumtext,
+    `responseText` mediumtext,
+    PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `users` (
     `id` varchar(40) NOT NULL,
     `createdAt` timestamp DEFAULT current_timestamp NOT NULL,

@@ -16,10 +16,8 @@ import je.glitch.data.api.controllers.v1.*;
 import je.glitch.data.api.database.MySQLConnection;
 import je.glitch.data.api.models.Session;
 import je.glitch.data.api.models.User;
-import je.glitch.data.api.utils.ErrorResponse;
 import je.glitch.data.api.utils.ErrorType;
 import je.glitch.data.api.utils.HttpException;
-import je.glitch.data.api.utils.Utils;
 import org.eclipse.jetty.http.HttpCookie;
 import org.eclipse.jetty.server.session.DefaultSessionCache;
 import org.eclipse.jetty.server.session.FileSessionDataStore;
@@ -58,6 +56,7 @@ public class Server {
     private final SimpleEndpointController simpleEndpointController;
     private final BusController busController;
     private final ErrorController errorController;
+    private final FoiController foiController;
 
     private final AdminUsersController adminUsersController;
     private final AdminTokensController adminTokensController;
@@ -78,6 +77,7 @@ public class Server {
         this.busController = new BusController(connection);
         this.simpleEndpointController = new SimpleEndpointController(connection, cache);
         this.errorController = new ErrorController();
+        this.foiController = new FoiController(connection);
         this.adminUsersController = new AdminUsersController(connection);
         this.adminTokensController = new AdminTokensController(connection);
         this.adminStatsController = new AdminStatsController(connection);
@@ -114,6 +114,9 @@ public class Server {
             });
             config.jetty.modifyServletContextHandler(handler -> handler.setSessionHandler(fileSessionHandler()));
         }).start(8080);
+
+        app.exception(Exception.class, errorController::handleException);
+        app.error(404, errorController::handleNotFound);
 
         app.before(ctx -> {
             String path = ctx.path();
@@ -180,7 +183,11 @@ public class Server {
         app.get("/v1/toilets", simpleEndpointController::handleGetToilets);
         app.get("/v1/recycling", simpleEndpointController::handleGetRecycling);
         app.get("/v1/defibrillators", simpleEndpointController::handleGetDefibrillators);
-        // TODO: Product recalls
+        app.get("/v1/foi-requests", foiController::handleGetFoiRequests);
+        app.get("/v1/foi-requests/stats", foiController::handleGetStats);
+        app.get("/v1/foi-requests/authors", foiController::handleGetAuthors);
+        app.get("/v1/foi-requests/producers", foiController::handleGetProducers);
+        app.get("/v1/foi-requests/{id}", foiController::handleGetById);
 
         app.get("/v1/charts/parking-stats", carparkController::handleGetParkingStats);
         app.get("/v1/charts/bus-passengers", simpleEndpointController::handleGetBusPassengersChart);
@@ -206,9 +213,6 @@ public class Server {
         app.post("/auth/register", authController::handleRegister);
 
         app.get("/me/session", meController::handleGetSession);
-
-        app.exception(Exception.class, errorController::handleException);
-        app.error(404, errorController::handleNotFound);
     }
 
     public static SessionHandler fileSessionHandler() {

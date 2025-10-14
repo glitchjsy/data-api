@@ -16,7 +16,7 @@ public class ErrorController {
             return;
         }
 
-        System.out.println(ex);
+//        System.out.println(ex);
 
         if (ex instanceof IllegalArgumentException) {
             ctx.status(400).json(new ErrorResponse(ErrorType.INVALID_REQUEST, ex.getMessage()));

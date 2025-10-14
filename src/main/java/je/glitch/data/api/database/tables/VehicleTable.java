@@ -2,6 +2,8 @@ package je.glitch.data.api.database.tables;
 
 import com.zaxxer.hikari.HikariDataSource;
 import io.javalin.http.Context;
+import je.glitch.data.api.utils.ErrorType;
+import je.glitch.data.api.utils.HttpException;
 import je.glitch.data.api.utils.Utils;
 import je.glitch.data.api.models.Vehicle;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +56,7 @@ public class VehicleTable implements ITable {
             return new ArrayList<>();
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
-            return new ArrayList<>();
+            throw new HttpException(ErrorType.SERVER_ERROR, 500, ex.getMessage());
         }
     }
 

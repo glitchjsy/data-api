@@ -13,6 +13,7 @@ public class MySQLConnection {
     private final ApiKeyTable apiKeyTable;
     private final UserTable userTable;
     private final LogTable logTable;
+    private final FoiTable foiTable;
 
     public MySQLConnection() {
         this.connect();
@@ -22,6 +23,7 @@ public class MySQLConnection {
         this.apiKeyTable = new ApiKeyTable(dataSource);
         this.userTable = new UserTable(dataSource);
         this.logTable = new LogTable(dataSource);
+        this.foiTable = new FoiTable(dataSource);
     }
 
     private void connect() {
