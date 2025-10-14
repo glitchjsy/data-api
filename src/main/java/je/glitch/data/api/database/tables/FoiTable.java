@@ -66,7 +66,7 @@ public class FoiTable implements ITable {
             String selectColumns = includeText ? "*" : "id, publishDate, title, producer, author";
 
             List<Map<String, Object>> requests = fetchRows(connection,
-                    "SELECT " + selectColumns + " " + query + " LIMIT ? OFFSET ?", params, limit, offset);
+                    "SELECT " + selectColumns + " " + query + " ORDER BY id DESC LIMIT ? OFFSET ?", params, limit, offset);
 
             ctx.json(Map.of(
                     "pagination", Map.of("page", page, "limit", limit, "totalPages", totalPages, "totalItems", totalItems),
