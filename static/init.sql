@@ -171,6 +171,21 @@ CREATE TABLE `foiRequests` (
     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `courtListingsWeeklyHashes` (
+    `hash` char(64) NOT NULL,
+    `fetchedAt` timestamp DEFAULT current_timestamp NOT NULL,
+    PRIMARY KEY (`hash`)
+);
+
+CREATE TABLE `courtListings` (
+    `id` int auto_increment NOT NULL,
+    `appearanceDate` timestamp,
+    `courtRoom` varchar(100),
+    `hearingPurpose` varchar(255),
+    `defendant` varchar(255),
+    PRIMARY KEY (`id`)
+);
+
 CREATE TABLE `users` (
     `id` varchar(40) NOT NULL,
     `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
