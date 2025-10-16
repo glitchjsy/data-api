@@ -171,13 +171,7 @@ CREATE TABLE `foiRequests` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `courtListingsWeeklyHashes` (
-    `hash` char(64) NOT NULL,
-    `fetchedAt` timestamp DEFAULT current_timestamp NOT NULL,
-    PRIMARY KEY (`hash`)
-);
-
-CREATE TABLE `courtListings` (
+CREATE TABLE `magistratesCourtHearings` (
     `id` int auto_increment NOT NULL,
     `appearanceDate` timestamp,
     `courtRoom` varchar(100),
@@ -186,7 +180,9 @@ CREATE TABLE `courtListings` (
     PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `courtResults` (
+ALTER TABLE `magistratesCourtHearings` ADD UNIQUE KEY `unique_magistrateCourt_hearing` (`appearanceDate`, `courtRoom`, `hearingPurpose`, `defendant`);
+
+CREATE TABLE `magistratesCourtResults` (
      `id` int auto_increment NOT NULL,
      `appearanceDate` timestamp,
      `video` varchar(50),
@@ -201,13 +197,15 @@ CREATE TABLE `courtResults` (
      PRIMARY KEY (`id`)
  );
 
- CREATE TABLE `courtResultOffences` (
-     `id` int auto_increment NOT NULL,
-     `listingId` int NOT NULL,
-     `offence` varchar(255),
-     FOREIGN KEY (`listingId`) REFERENCES `courtListings`(`id`) ON DELETE CASCADE,
-     PRIMARY KEY (`id`)
- );
+ALTER TABLE `magistratesCourtResults` ADD UNIQUE KEY `unique_magistratesCourt_result` (`appearanceDate`, `courtRoom`, `hearingPurpose`, `defendant`, `video`, `remandedOrBailed`);
+
+CREATE TABLE magistratesCourtResultOffences (
+    `id` int auto_increment NOT NULL,
+    `resultId` int NOT NULL,
+    `offence` varchar(255),
+    PRIMARY KEY(`id`),
+    UNIQUE KEY `unique_offence` (`resultId`, `offence`)
+);
 
 CREATE TABLE `users` (
     `id` varchar(40) NOT NULL,

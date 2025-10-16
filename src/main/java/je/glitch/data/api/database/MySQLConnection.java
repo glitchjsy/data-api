@@ -14,6 +14,7 @@ public class MySQLConnection {
     private final UserTable userTable;
     private final LogTable logTable;
     private final FoiTable foiTable;
+    private final CourtTable courtTable;
 
     public MySQLConnection() {
         this.connect();
@@ -24,6 +25,7 @@ public class MySQLConnection {
         this.userTable = new UserTable(dataSource);
         this.logTable = new LogTable(dataSource);
         this.foiTable = new FoiTable(dataSource);
+        this.courtTable = new CourtTable(dataSource);
     }
 
     private void connect() {

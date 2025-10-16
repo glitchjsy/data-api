@@ -57,6 +57,7 @@ public class Server {
     private final BusController busController;
     private final ErrorController errorController;
     private final FoiController foiController;
+    private final CourtController courtController;
 
     private final AdminUsersController adminUsersController;
     private final AdminTokensController adminTokensController;
@@ -78,6 +79,7 @@ public class Server {
         this.simpleEndpointController = new SimpleEndpointController(connection, cache);
         this.errorController = new ErrorController();
         this.foiController = new FoiController(connection);
+        this.courtController = new CourtController(connection);
         this.adminUsersController = new AdminUsersController(connection);
         this.adminTokensController = new AdminTokensController(connection);
         this.adminStatsController = new AdminStatsController(connection);
@@ -188,6 +190,11 @@ public class Server {
         app.get("/v1/foi-requests/authors", foiController::handleGetAuthors);
         app.get("/v1/foi-requests/producers", foiController::handleGetProducers);
         app.get("/v1/foi-requests/{id}", foiController::handleGetById);
+
+        app.get("/v1/courts/magistrates/hearings", courtController::handleGetMagistratesHearings);
+        app.get("/v1/courts/magistrates/results", courtController::handleGetMagistratesResults);
+        app.get("/v1/courts/magistrates/hearings/fields", courtController::handleGetDistinctMagistratesHearingFields);
+        app.get("/v1/courts/magistrates/results/fields", courtController::handleGetDistinctMagistratesResultFields);
 
         app.get("/v1/charts/parking-stats", carparkController::handleGetParkingStats);
         app.get("/v1/charts/bus-passengers", simpleEndpointController::handleGetBusPassengersChart);
