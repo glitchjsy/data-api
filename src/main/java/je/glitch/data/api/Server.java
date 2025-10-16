@@ -208,6 +208,7 @@ public class Server {
         app.delete("/admin/tokens/{tokenId}", adminTokensController::handleDeleteToken);
         app.get("/admin/stats", adminStatsController::handleGetStats);
         app.get("/admin/stats/daily-requests", adminStatsController::handleGetDailyRequestsChart);
+        app.get("/admin/stats/top-endpoints", adminStatsController::handleGetTopEndpoints);
 
         app.post("/auth/login", authController::handleLogin);
         app.post("/auth/register", authController::handleRegister);

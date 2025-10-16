@@ -22,8 +22,8 @@ public class AuthController {
     public void handleLogin(Context ctx) {
         Session existingSession = ctx.sessionAttribute("session");
         if (existingSession != null) {
-            ctx.status(400).json(new ErrorResponse(ErrorType.INVALID_REQUEST, "Already logged in"));
-            return;
+        //    ctx.status(400).json(new ErrorResponse(ErrorType.INVALID_REQUEST, "Already logged in"));
+        //    return;
         }
 
         LoginBody loginBody = ctx.bodyAsClass(LoginBody.class);

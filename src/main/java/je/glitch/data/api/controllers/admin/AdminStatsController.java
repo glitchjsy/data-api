@@ -7,6 +7,7 @@ import je.glitch.data.api.database.MySQLConnection;
 import je.glitch.data.api.models.ApiRequestStats;
 import je.glitch.data.api.models.ApiResponse;
 import je.glitch.data.api.models.DailyRequestStat;
+import je.glitch.data.api.models.EndpointRequestStat;
 import je.glitch.data.api.utils.Utils;
 import lombok.RequiredArgsConstructor;
 
@@ -46,4 +47,22 @@ public class AdminStatsController {
 
         ctx.json(new ApiResponse<>(array));
     }
+
+    public void handleGetTopEndpoints(Context ctx) {
+        Integer year = ctx.queryParamAsClass("year", Integer.class).getOrDefault(null);
+        Integer month = ctx.queryParamAsClass("month", Integer.class).getOrDefault(null);
+
+        List<EndpointRequestStat> stats = connection.getLogTable().getTopEndpoints(year, month);
+
+        JsonArray array = new JsonArray();
+        for (EndpointRequestStat stat : stats) {
+            JsonObject obj = new JsonObject();
+            obj.addProperty("path", stat.getPath());
+            obj.addProperty("total", stat.getTotal());
+            array.add(obj);
+        }
+
+        ctx.json(new ApiResponse<>(array));
+    }
+
 }

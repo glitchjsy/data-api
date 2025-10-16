@@ -3,6 +3,7 @@ package je.glitch.data.api.database.tables;
 import com.zaxxer.hikari.HikariDataSource;
 import je.glitch.data.api.models.ApiRequestStats;
 import je.glitch.data.api.models.DailyRequestStat;
+import je.glitch.data.api.models.EndpointRequestStat;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
@@ -101,6 +102,45 @@ public class LogTable implements ITable {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
+        return stats;
+    }
+
+    public List<EndpointRequestStat> getTopEndpoints(Integer year, Integer month) {
+        String baseSql = """
+        SELECT path, COUNT(*) AS total
+        FROM apiRequests
+    """;
+
+        String whereClause = "";
+        if (year != null && month != null && year > 0 && month > 0) {
+            whereClause = "WHERE YEAR(createdAt) = ? AND MONTH(createdAt) = ?";
+        }
+
+        String groupOrderLimit = " GROUP BY path ORDER BY total DESC LIMIT 20";
+        String sql = baseSql + " " + whereClause + groupOrderLimit;
+
+        List<EndpointRequestStat> stats = new ArrayList<>();
+
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement stmt = connection.prepareStatement(sql)) {
+
+            if (!whereClause.isEmpty()) {
+                stmt.setInt(1, year);
+                stmt.setInt(2, month);
+            }
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    stats.add(new EndpointRequestStat(
+                            rs.getString("path"),
+                            rs.getLong("total")
+                    ));
+                }
+            }
+        } catch (Exception ex) {
+            System.out.println("Error fetching top endpoints: " + ex.getMessage());
+        }
+
         return stats;
     }
 }

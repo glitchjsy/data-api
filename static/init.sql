@@ -186,6 +186,29 @@ CREATE TABLE `courtListings` (
     PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `courtResults` (
+     `id` int auto_increment NOT NULL,
+     `appearanceDate` timestamp,
+     `video` varchar(50),
+     `hearingPurpose` varchar(255),
+     `result` TEXT,
+     `remandedOrBailed` varchar(50),
+     `nextAppearanceDate` timestamp,
+     `courtRoom` varchar(100),
+     `lawOfficer` varchar(255),
+     `defendant` varchar(255),
+     `magistrate` varchar(255),
+     PRIMARY KEY (`id`)
+ );
+
+ CREATE TABLE `courtResultOffences` (
+     `id` int auto_increment NOT NULL,
+     `listingId` int NOT NULL,
+     `offence` varchar(255),
+     FOREIGN KEY (`listingId`) REFERENCES `courtListings`(`id`) ON DELETE CASCADE,
+     PRIMARY KEY (`id`)
+ );
+
 CREATE TABLE `users` (
     `id` varchar(40) NOT NULL,
     `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
