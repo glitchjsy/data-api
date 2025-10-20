@@ -19,10 +19,7 @@ import je.glitch.data.api.models.User;
 import je.glitch.data.api.utils.ErrorType;
 import je.glitch.data.api.utils.HttpException;
 import org.eclipse.jetty.http.HttpCookie;
-import org.eclipse.jetty.server.session.DefaultSessionCache;
-import org.eclipse.jetty.server.session.FileSessionDataStore;
-import org.eclipse.jetty.server.session.SessionCache;
-import org.eclipse.jetty.server.session.SessionHandler;
+import org.eclipse.jetty.server.session.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -114,7 +111,7 @@ public class Server {
                     it.allowCredentials = true;
                 });
             });
-            config.jetty.modifyServletContextHandler(handler -> handler.setSessionHandler(fileSessionHandler()));
+            config.jetty.modifyServletContextHandler(handler -> handler.setSessionHandler(sqlSessionHandler()));
         }).start(8080);
 
         app.exception(Exception.class, errorController::handleException);
@@ -155,12 +152,20 @@ public class Server {
             String ip = ctx.ip();
             String userAgent = ctx.userAgent();
             String tokenHeader = ctx.header("Authorization");
+            String tokenQuery = ctx.queryParam("auth");
 
             trackingThreadPool.submit(() -> {
                 String apiTokenId = null;
+                String token = null;
+
                 if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
-                    String token = tokenHeader.substring(7);
-                    apiTokenId = connection.getApiKeyTable().getIdFromKey(token);
+                    token = tokenHeader.substring(7);
+                } else if (tokenQuery != null && !tokenQuery.isEmpty()) {
+                    token = tokenQuery;
+                }
+                if (token != null) {
+                    String foundId = connection.getApiKeyTable().getIdFromKey(token);
+                    apiTokenId = (foundId != null && !foundId.isEmpty()) ? foundId : null;
                 }
                 connection.getLogTable().trackRequest(method, path, status, ip, userAgent, apiTokenId);
             });
@@ -210,9 +215,9 @@ public class Server {
         app.post("/admin/users/{userId}", adminUsersController::handleUpdateUser);
         app.delete("/admin/users/{userId}", adminUsersController::handleDeleteUser);
         app.get("/admin/users/{userId}/tokens", adminTokensController::handleListTokensForUser);
-        app.get("/admin/tokens", adminTokensController::handleListTokens);
-        app.post("/admin/tokens/new", adminTokensController::handleCreateToken);
-        app.delete("/admin/tokens/{tokenId}", adminTokensController::handleDeleteToken);
+        app.get("/admin/api-keys", adminTokensController::handleListTokens);
+        app.post("/admin/api-keys/new", adminTokensController::handleCreateToken);
+        app.delete("/admin/api-keys/{tokenId}", adminTokensController::handleDeleteToken);
         app.get("/admin/stats", adminStatsController::handleGetStats);
         app.get("/admin/stats/daily-requests", adminStatsController::handleGetDailyRequestsChart);
         app.get("/admin/stats/top-endpoints", adminStatsController::handleGetTopEndpoints);
@@ -221,26 +226,28 @@ public class Server {
         app.post("/auth/register", authController::handleRegister);
 
         app.get("/me/session", meController::handleGetSession);
+        app.get("/me/api-keys", meController::handleListApiKeys);
+        app.delete("/me/api-keys/{tokenId}", meController::handleDeleteApiKey);
+        app.post("/me/api-keys/new", meController::handleCreateApiKey);
     }
 
-    public static SessionHandler fileSessionHandler() {
+    private SessionHandler sqlSessionHandler() {
         SessionHandler sessionHandler = new SessionHandler();
         SessionCache sessionCache = new DefaultSessionCache(sessionHandler);
-        sessionCache.setSessionDataStore(fileSessionDataStore());
+        sessionCache.setSessionDataStore(
+                jdbcDataStoreFactory().getSessionDataStore(sessionHandler)
+        );
         sessionHandler.setSessionCache(sessionCache);
-        sessionHandler.setSecureRequestOnly(false);
-        sessionHandler.setSameSite(HttpCookie.SameSite.NONE);
         sessionHandler.setHttpOnly(true);
-        // make additional changes to your SessionHandler here
         return sessionHandler;
     }
 
-    private static FileSessionDataStore fileSessionDataStore() {
-        FileSessionDataStore fileSessionDataStore = new FileSessionDataStore();
-        File baseDir = new File(System.getProperty("java.io.tmpdir"));
-        File storeDir = new File(baseDir, "javalin-session-store");
-        storeDir.mkdir();
-        fileSessionDataStore.setStoreDir(storeDir);
-        return fileSessionDataStore;
+    private JDBCSessionDataStoreFactory jdbcDataStoreFactory() {
+        DatabaseAdaptor databaseAdaptor = new DatabaseAdaptor();
+        databaseAdaptor.setDriverInfo("com.mysql.cj.jdbc.Driver", "jdbc:mysql://localhost/opendata");
+        databaseAdaptor.setDatasource(connection.getDataSource());
+        JDBCSessionDataStoreFactory jdbcSessionDataStoreFactory = new JDBCSessionDataStoreFactory();
+        jdbcSessionDataStoreFactory.setDatabaseAdaptor(databaseAdaptor);
+        return jdbcSessionDataStoreFactory;
     }
 }

@@ -23,10 +23,12 @@ public class ApiKeyTable implements ITable {
             PreparedStatement stmt = connection.prepareStatement("""
             SELECT
                 apiTokens.*,
-                users.email AS userEmail
+                users.email AS userEmail,
+                COUNT(apiRequests.id) AS totalUses
             FROM
                 apiTokens
             LEFT JOIN users ON users.id = apiTokens.userId
+            LEFT JOIN apiRequests ON apiTokens.id = apiRequests.apiTokenId
             GROUP BY apiTokens.id, users.id
             """);
             try (ResultSet result = stmt.executeQuery()) {
@@ -39,6 +41,31 @@ public class ApiKeyTable implements ITable {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
             return new ArrayList<>();
+        }
+    }
+
+    public ApiToken getToken(String id) {
+        try (Connection connection = dataSource.getConnection()) {
+            PreparedStatement stmt = connection.prepareStatement("""
+            SELECT
+                apiTokens.*,
+                users.email AS userEmail,
+                COUNT(apiRequests.id) AS totalUses
+            FROM
+                apiTokens
+            LEFT JOIN users ON users.id = apiTokens.userId
+            LEFT JOIN apiRequests ON apiTokens.id = apiRequests.apiTokenId
+            GROUP BY apiTokens.id, users.id
+            """);
+            try (ResultSet result = stmt.executeQuery()) {
+                if (result.next()) {
+                    return ApiToken.of(result);
+                }
+                return null;
+            }
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+            return null;
         }
     }
 
@@ -106,7 +133,15 @@ public class ApiKeyTable implements ITable {
      * @return a list of tokens for the user
      */
     public List<ApiToken> getTokensForUser(String userId) {
-        String sql = "SELECT * FROM apiTokens WHERE userId = ?";
+        String sql = """
+            SELECT
+                apiTokens.*,
+                COUNT(apiRequests.id) AS totalUses
+            FROM apiTokens
+            LEFT JOIN apiRequests ON apiTokens.id = apiRequests.apiTokenId
+            WHERE userId = ?
+            GROUP BY apiTokens.id
+        """;
         try (Connection connection = dataSource.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
 

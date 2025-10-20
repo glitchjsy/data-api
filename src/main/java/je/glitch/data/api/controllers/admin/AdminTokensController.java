@@ -8,7 +8,6 @@ import je.glitch.data.api.utils.ErrorResponse;
 import je.glitch.data.api.utils.ErrorType;
 import lombok.RequiredArgsConstructor;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +32,8 @@ public class AdminTokensController {
                 bodyToken.getUserId(),
                 null,
                 tokenString,
-                bodyToken.getSummary()
+                bodyToken.getSummary(),
+                0
         );
 
         boolean success = connection.getApiKeyTable().createToken(token);

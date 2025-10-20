@@ -76,10 +76,12 @@ public class LogTable implements ITable {
 
     public List<DailyRequestStat> getDailyStatsForMonth(int year, int month) {
         String sql = """
-            SELECT DATE(createdAt) AS day, COUNT(*) AS total
+            SELECT DATE(createdAt) AS day,
+                   CASE WHEN apiTokenId IS NULL THEN 'unauthenticated' ELSE 'authenticated' END AS authStatus,
+                   COUNT(*) AS total
             FROM apiRequests
             WHERE YEAR(createdAt) = ? AND MONTH(createdAt) = ?
-            GROUP BY DATE(createdAt)
+            GROUP BY DATE(createdAt), authStatus
             ORDER BY day ASC
         """;
 
@@ -95,6 +97,7 @@ public class LogTable implements ITable {
                 while (rs.next()) {
                     stats.add(new DailyRequestStat(
                             rs.getString("day"),
+                            rs.getString("authStatus"),
                             rs.getLong("total")
                     ));
                 }
@@ -107,9 +110,9 @@ public class LogTable implements ITable {
 
     public List<EndpointRequestStat> getTopEndpoints(Integer year, Integer month) {
         String baseSql = """
-        SELECT path, COUNT(*) AS total
-        FROM apiRequests
-    """;
+            SELECT path, COUNT(*) AS total
+            FROM apiRequests
+        """;
 
         String whereClause = "";
         if (year != null && month != null && year > 0 && month > 0) {

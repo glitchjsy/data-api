@@ -12,7 +12,9 @@ import je.glitch.data.api.utils.Utils;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @RequiredArgsConstructor
 public class AdminStatsController {
@@ -37,16 +39,36 @@ public class AdminStatsController {
 
         List<DailyRequestStat> stats = connection.getLogTable().getDailyStatsForMonth(year, month);
 
-        JsonArray array = new JsonArray();
+        Map<String, JsonObject> dayMap = new LinkedHashMap<>();
+
         for (DailyRequestStat stat : stats) {
-            JsonObject obj = new JsonObject();
-            obj.addProperty("day", stat.getDay());
-            obj.addProperty("total", stat.getTotal());
+            JsonObject dayObj = dayMap.computeIfAbsent(stat.getDay(), d -> {
+                JsonObject obj = new JsonObject();
+                obj.addProperty("day", d);
+                obj.addProperty("authenticated", 0);
+                obj.addProperty("unauthenticated", 0);
+                return obj;
+            });
+
+            if ("authenticated".equals(stat.getAuthStatus())) {
+                dayObj.addProperty("authenticated", dayObj.get("authenticated").getAsLong() + stat.getTotal());
+            } else {
+                dayObj.addProperty("unauthenticated", dayObj.get("unauthenticated").getAsLong() + stat.getTotal());
+            }
+        }
+
+        JsonArray array = new JsonArray();
+        for (JsonObject obj : dayMap.values()) {
+            obj.addProperty(
+                    "total",
+                    obj.get("authenticated").getAsLong() + obj.get("unauthenticated").getAsLong()
+            );
             array.add(obj);
         }
 
         ctx.json(new ApiResponse<>(array));
     }
+
 
     public void handleGetTopEndpoints(Context ctx) {
         Integer year = ctx.queryParamAsClass("year", Integer.class).getOrDefault(null);
