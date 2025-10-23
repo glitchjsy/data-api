@@ -17,28 +17,22 @@ public class VehicleTable implements ITable {
 
     public List<Vehicle> getVehicles(Context ctx) {
         try (Connection connection = dataSource.getConnection()) {
-            String dateField = "regInJersey".equals(ctx.queryParam("dateType"))
-                    ? "firstRegisteredInJerseyAt"
-                    : "firstRegisteredAt";
+            StringBuilder query = new StringBuilder("FROM vehicles WHERE 1=1");
+            List<Object> params = new ArrayList<>();
 
-            Utils.QueryDateResult dateResult = Utils.queryDateSql(
-                    dateField,
-                    ctx.queryParam("startDate"),
-                    ctx.queryParam("endDate")
-            );
-
-            StringBuilder query = new StringBuilder("FROM vehicles");
-            List<Object> params = new ArrayList<>(dateResult.getDateParams());
-
-            if (!dateResult.getDateSql().isEmpty()) {
-                query.append(" ").append(dateResult.getDateSql());
-            }
-
+            // Basic filters
             addFilter(query, params, "make LIKE ?", ctx.queryParam("make"));
             addFilter(query, params, "model LIKE ?", ctx.queryParam("model"));
             addFilter(query, params, "fuelType = ?", ctx.queryParam("fuelType"));
             addFilter(query, params, "color LIKE ?", ctx.queryParam("color"));
 
+            // Date filters
+            addDateFilter(query, params, "firstRegisteredAt", ctx.queryParam("firstRegisteredAfter"), ">=");
+            addDateFilter(query, params, "firstRegisteredAt", ctx.queryParam("firstRegisteredBefore"), "<=");
+            addDateFilter(query, params, "firstRegisteredInJerseyAt", ctx.queryParam("firstRegisteredInJerseyAfter"), ">=");
+            addDateFilter(query, params, "firstRegisteredInJerseyAt", ctx.queryParam("firstRegisteredInJerseyBefore"), "<=");
+
+            // Pagination
             int page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
             int limit = ctx.queryParamAsClass("limit", Integer.class).getOrDefault(30);
             int offset = (page - 1) * limit;
@@ -46,8 +40,11 @@ public class VehicleTable implements ITable {
             int totalItems = fetchSingleInt(connection, "SELECT COUNT(*) " + query, params);
             int totalPages = (int) Math.ceil((double) totalItems / limit);
 
-            List<Map<String, Object>> vehicles = fetchRows(connection,
-                    "SELECT * " + query + " LIMIT ? OFFSET ?", params, limit, offset);
+            List<Map<String, Object>> vehicles = fetchRows(
+                    connection,
+                    "SELECT * " + query + " ORDER BY firstRegisteredAt DESC LIMIT ? OFFSET ?",
+                    params, limit, offset
+            );
 
             ctx.json(Map.of(
                     "pagination", Map.of("page", page, "limit", limit, "totalPages", totalPages, "totalItems", totalItems),
@@ -60,12 +57,15 @@ public class VehicleTable implements ITable {
         }
     }
 
-    public Map<String, Object> getStats(String dateType, String startDate, String endDate) throws SQLException {
-        String dateField = "regInJersey".equals(dateType)
-                ? "firstRegisteredInJerseyAt"
-                : "firstRegisteredAt";
+    public Map<String, Object> getStats(Context ctx) throws SQLException {
+        StringBuilder query = new StringBuilder("FROM vehicles WHERE 1=1");
+        List<Object> params = new ArrayList<>();
 
-        Utils.QueryDateResult dateResult = Utils.queryDateSql(dateField, startDate, endDate);
+        // Date filters
+        addDateFilter(query, params, "firstRegisteredAt", ctx.queryParam("firstRegisteredAfter"), ">=");
+        addDateFilter(query, params, "firstRegisteredAt", ctx.queryParam("firstRegisteredBefore"), "<=");
+        addDateFilter(query, params, "firstRegisteredInJerseyAt", ctx.queryParam("firstRegisteredInJerseyAfter"), ">=");
+        addDateFilter(query, params, "firstRegisteredInJerseyAt", ctx.queryParam("firstRegisteredInJerseyBefore"), "<=");
 
         String sql = """
             SELECT
@@ -73,14 +73,11 @@ public class VehicleTable implements ITable {
                 COUNT(DISTINCT model) AS distinctModels,
                 COUNT(DISTINCT make) AS distinctMakes,
                 COUNT(DISTINCT color) AS distinctColors
-            FROM vehicles
-            """ + dateResult.getDateSql();
+            """ + query;
 
         try (Connection conn = dataSource.getConnection()) {
             PreparedStatement stmt = conn.prepareStatement(sql);
 
-            // Set the query parameters dynamically
-            List<Object> params = dateResult.getDateParams();
             for (int i = 0; i < params.size(); i++) {
                 stmt.setObject(i + 1, params.get(i));
             }
@@ -99,19 +96,21 @@ public class VehicleTable implements ITable {
         return new HashMap<>();
     }
 
-    public Map<String, Object> getColors(String dateType, String startDate, String endDate) throws SQLException {
-        String dateField = "regInJersey".equals(dateType)
-                ? "firstRegisteredInJerseyAt"
-                : "firstRegisteredAt";
+    public Map<String, Object> getColors(Context ctx) throws SQLException {
+        StringBuilder query = new StringBuilder("FROM vehicles WHERE 1=1");
+        List<Object> params = new ArrayList<>();
 
-        Utils.QueryDateResult dateResult = Utils.queryDateSql(dateField, startDate, endDate);
+        // Date filters
+        addDateFilter(query, params, "firstRegisteredAt", ctx.queryParam("firstRegisteredAfter"), ">=");
+        addDateFilter(query, params, "firstRegisteredAt", ctx.queryParam("firstRegisteredBefore"), "<=");
+        addDateFilter(query, params, "firstRegisteredInJerseyAt", ctx.queryParam("firstRegisteredInJerseyAfter"), ">=");
+        addDateFilter(query, params, "firstRegisteredInJerseyAt", ctx.queryParam("firstRegisteredInJerseyBefore"), "<=");
 
-        String sql = "SELECT color, COUNT(*) AS occurrences FROM vehicles " + dateResult.getDateSql() + " GROUP BY color ORDER BY occurrences DESC";
+        String sql = "SELECT color, COUNT(*) AS occurrences " + query + " GROUP BY color ORDER BY occurrences DESC";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            List<Object> params = dateResult.getDateParams();
             for (int i = 0; i < params.size(); i++) {
                 stmt.setObject(i + 1, params.get(i));
             }
@@ -131,19 +130,21 @@ public class VehicleTable implements ITable {
         }
     }
 
-    public Map<String, Object> getMakes(String dateType, String startDate, String endDate) throws SQLException {
-        String dateField = "regInJersey".equals(dateType)
-                ? "firstRegisteredInJerseyAt"
-                : "firstRegisteredAt";
+    public Map<String, Object> getMakes(Context ctx) throws SQLException {
+        StringBuilder query = new StringBuilder("FROM vehicles WHERE 1=1");
+        List<Object> params = new ArrayList<>();
 
-        Utils.QueryDateResult dateResult = Utils.queryDateSql(dateField, startDate, endDate);
+        // Date filters
+        addDateFilter(query, params, "firstRegisteredAt", ctx.queryParam("firstRegisteredAfter"), ">=");
+        addDateFilter(query, params, "firstRegisteredAt", ctx.queryParam("firstRegisteredBefore"), "<=");
+        addDateFilter(query, params, "firstRegisteredInJerseyAt", ctx.queryParam("firstRegisteredInJerseyAfter"), ">=");
+        addDateFilter(query, params, "firstRegisteredInJerseyAt", ctx.queryParam("firstRegisteredInJerseyBefore"), "<=");
 
-        String sql = "SELECT make, COUNT(*) AS occurrences FROM vehicles " + dateResult.getDateSql() + " GROUP BY make ORDER BY occurrences DESC";
+        String sql = "SELECT make, COUNT(*) AS occurrences " + query + " GROUP BY make ORDER BY occurrences DESC";
 
         try (Connection conn = dataSource.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            List<Object> params = dateResult.getDateParams();
             for (int i = 0; i < params.size(); i++) {
                 stmt.setObject(i + 1, params.get(i));
             }
@@ -161,36 +162,34 @@ public class VehicleTable implements ITable {
     }
 
     public Map<String, Object> getModels(Context ctx) {
+        StringBuilder query = new StringBuilder("FROM vehicles WHERE 1=1");
+        List<Object> params = new ArrayList<>();
+
+        // Date filters
+        addDateFilter(query, params, "firstRegisteredAt", ctx.queryParam("firstRegisteredAfter"), ">=");
+        addDateFilter(query, params, "firstRegisteredAt", ctx.queryParam("firstRegisteredBefore"), "<=");
+        addDateFilter(query, params, "firstRegisteredInJerseyAt", ctx.queryParam("firstRegisteredInJerseyAfter"), ">=");
+        addDateFilter(query, params, "firstRegisteredInJerseyAt", ctx.queryParam("firstRegisteredInJerseyBefore"), "<=");
+
         try (Connection connection = dataSource.getConnection()) {
-            String dateField = "regInJersey".equals(ctx.queryParam("dateType"))
-                    ? "firstRegisteredInJerseyAt"
-                    : "firstRegisteredAt";
+            // Pagination
+            String countSql = """
+            SELECT COUNT(*) AS count FROM (
+                SELECT model, make, COUNT(*) AS occurrences
+                """ + query + " GROUP BY model, make) AS subquery";
 
-            Utils.QueryDateResult dateResult = Utils.queryDateSql(
-                    dateField,
-                    ctx.queryParam("startDate"),
-                    ctx.queryParam("endDate")
-            );
-
-            // Build the SQL query for counting the total items (subquery)
-            StringBuilder countQuery = new StringBuilder("SELECT COUNT(*) AS count FROM (");
-            countQuery.append("SELECT model, make, COUNT(*) AS occurrences FROM vehicles ");
-            countQuery.append(dateResult.getDateSql());
-            countQuery.append(" GROUP BY model, make) AS subquery");
-
-            List<Object> params = new ArrayList<>(dateResult.getDateParams());
-
-            int totalItems = fetchSingleInt(connection, countQuery.toString(), params);
+            int totalItems = fetchSingleInt(connection, countSql, params);
             int limit = ctx.queryParamAsClass("limit", Integer.class).getOrDefault(300);
             int page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
             int offset = (page - 1) * limit;
             int totalPages = (int) Math.ceil((double) totalItems / limit);
 
-            StringBuilder query = new StringBuilder("SELECT model, make, COUNT(*) AS occurrences FROM vehicles ");
-            query.append(dateResult.getDateSql());
-            query.append(" GROUP BY model, make ORDER BY occurrences DESC LIMIT ? OFFSET ?");
+            // Result
+            String sql = """
+            SELECT model, make, COUNT(*) AS occurrences
+            """ + query + " GROUP BY model, make ORDER BY occurrences DESC LIMIT ? OFFSET ?";
 
-            List<Map<String, Object>> results = fetchRows(connection, query.toString(), params, limit, offset);
+            List<Map<String, Object>> results = fetchRows(connection, sql, params, limit, offset);
 
             Map<String, Object> occurrences = new HashMap<>();
             for (Map<String, Object> item : results) {
@@ -210,9 +209,9 @@ public class VehicleTable implements ITable {
                     ),
                     "results", occurrences
             );
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return Map.of("error", "An error occurred while processing the request.");
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            throw new HttpException(ErrorType.SERVER_ERROR, 500, ex.getMessage());
         }
     }
 
@@ -225,6 +224,16 @@ public class VehicleTable implements ITable {
                 newValue = "%" + value + "%";
             }
             params.add(newValue);
+        }
+    }
+
+    private void addDateFilter(StringBuilder query, List<Object> params, String field, String value, String operator) {
+        if (value != null && !value.isEmpty()) {
+            if (!Utils.DATE_FORMAT.matcher(value).matches()) {
+                throw new IllegalArgumentException("Invalid date format for " + field + ". Please use YYYY/MM/DD or YYYY-MM-DD.");
+            }
+            query.append(" AND ").append(field).append(" ").append(operator).append(" ?");
+            params.add(value);
         }
     }
 

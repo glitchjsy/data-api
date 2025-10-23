@@ -27,29 +27,17 @@ public class VehicleController {
     }
 
     public void handleGetStats(Context ctx) throws SQLException {
-        String dateType = ctx.queryParam("dateType");
-        String startDate = ctx.queryParam("startDate");
-        String endDate = ctx.queryParam("endDate");
-
-        Map<String, Object> stats = connection.getVehicleTable().getStats(dateType, startDate, endDate);
+        Map<String, Object> stats = connection.getVehicleTable().getStats(ctx);
         ctx.json(new ApiResponse<>(stats));
     }
 
     public void handleGetColors(Context ctx) throws SQLException {
-        String dateType = ctx.queryParam("dateType");
-        String startDate = ctx.queryParam("startDate");
-        String endDate = ctx.queryParam("endDate");
-
-        Map<String, Object> stats = connection.getVehicleTable().getColors(dateType, startDate, endDate);
+        Map<String, Object> stats = connection.getVehicleTable().getColors(ctx);
         ctx.json(new ApiResponse<>(stats));
     }
 
     public void handleGetMakes(Context ctx) throws SQLException {
-        String dateType = ctx.queryParam("dateType");
-        String startDate = ctx.queryParam("startDate");
-        String endDate = ctx.queryParam("endDate");
-
-        Map<String, Object> stats = connection.getVehicleTable().getMakes(dateType, startDate, endDate);
+        Map<String, Object> stats = connection.getVehicleTable().getMakes(ctx);
         ctx.json(new ApiResponse<>(stats));
     }
 

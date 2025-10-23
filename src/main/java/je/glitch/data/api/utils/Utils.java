@@ -25,7 +25,7 @@ import java.util.regex.Pattern;
 
 public class Utils {
     public static final String TEMP_ADMIN_API_KEY = "CHANGEME";
-    private static final Pattern DATE_FORMAT = Pattern.compile("\\d{4}/\\d{2}/\\d{2}"); // Regex for YYYY/MM/DD format
+    public static final Pattern DATE_FORMAT = Pattern.compile("^\\d{4}[-/]\\d{2}[-/]\\d{2}$");
 
     private static final RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
 
