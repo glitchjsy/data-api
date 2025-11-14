@@ -107,7 +107,18 @@ public class Server {
             config.showJavalinBanner = false;
             config.bundledPlugins.enableCors(cors -> {
                 cors.addRule(it -> {
-                    it.allowHost("http://localhost:3000", "http://127.0.0.1:3000", "https://data.glitch.je", "https://opendata.je");
+                    it.path = "/v1/*";
+                    it.anyHost();
+                    it.allowCredentials = false;
+                });
+                cors.addRule(it -> {
+                    it.path = "/*";
+                    it.allowHost(
+                            "http://localhost:3000",
+                            "http://127.0.0.1:3000",
+                            "https://data.glitch.je",
+                            "https://opendata.je"
+                    );
                     it.allowCredentials = true;
                 });
             });
