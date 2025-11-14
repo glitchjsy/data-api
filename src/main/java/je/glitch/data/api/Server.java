@@ -16,6 +16,7 @@ import je.glitch.data.api.controllers.v1.*;
 import je.glitch.data.api.database.MySQLConnection;
 import je.glitch.data.api.models.Session;
 import je.glitch.data.api.models.User;
+import je.glitch.data.api.services.*;
 import je.glitch.data.api.utils.ErrorType;
 import je.glitch.data.api.utils.HttpException;
 import org.eclipse.jetty.http.HttpCookie;
@@ -70,18 +71,19 @@ public class Server {
     public Server() {
         this.connection = new MySQLConnection();
         this.cache = new RedisCache();
-        this.carparkController = new CarparkController(connection, cache);
-        this.vehicleController = new VehicleController(connection);
-        this.busController = new BusController(connection);
+
+        this.carparkController = new CarparkController(new CarparkService(connection, cache));
+        this.vehicleController = new VehicleController(new VehicleService(connection));
+        this.busController = new BusController(new BusService(connection));
         this.simpleEndpointController = new SimpleEndpointController(connection, cache);
         this.errorController = new ErrorController();
-        this.foiController = new FoiController(connection);
-        this.courtController = new CourtController(connection);
+        this.foiController = new FoiController(new FoiService(connection));
+        this.courtController = new CourtController(new CourtService(connection));
+        this.authController = new AuthController(new AuthService(connection));
+        this.meController = new MeController(new ApiKeyService(connection), new UserService(connection));
         this.adminUsersController = new AdminUsersController(connection);
         this.adminTokensController = new AdminTokensController(connection);
         this.adminStatsController = new AdminStatsController(connection);
-        this.authController = new AuthController(connection);
-        this.meController = new MeController(connection);
     }
 
     public static void main(String[] args) {
