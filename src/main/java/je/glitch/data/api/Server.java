@@ -137,6 +137,7 @@ public class Server {
         app.exception(Exception.class, errorController::handleException);
         app.error(404, errorController::handleNotFound);
 
+        // Admin handling
         app.before(ctx -> {
             String path = ctx.path();
 
@@ -159,6 +160,17 @@ public class Server {
             }
         });
 
+        // Enforce user agent header
+        app.before(ctx -> {
+            String path = ctx.path();
+            String userAgent = ctx.header("user-agent");
+
+            if (path.startsWith("/v1") && userAgent == null) {
+                throw new HttpException(ErrorType.MISSING_USER_AGENT, 400, ErrorType.MISSING_USER_AGENT.getDefaultMessage());
+            }
+        });
+
+        // Analytics tracking
         app.after(ctx -> {
             String path = ctx.path();
 
