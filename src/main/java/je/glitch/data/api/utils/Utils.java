@@ -1,5 +1,7 @@
 package je.glitch.data.api.utils;
 
+import io.javalin.http.Context;
+import je.glitch.data.api.database.MySQLConnection;
 import lombok.Data;
 
 import java.io.IOException;
@@ -12,7 +14,6 @@ import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.time.LocalDate;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeFormatterBuilder;
 import java.time.format.DateTimeParseException;
@@ -27,7 +28,7 @@ public class Utils {
     public static final String TEMP_ADMIN_API_KEY = "CHANGEME";
     public static final Pattern DATE_FORMAT = Pattern.compile("^\\d{4}[-/]\\d{2}[-/]\\d{2}$");
 
-    private static final RuntimeMXBean runtimeBean = ManagementFactory.getRuntimeMXBean();
+    private static final RuntimeMXBean RUNTIME_BEAN = ManagementFactory.getRuntimeMXBean();
 
     public static QueryDateResult queryDateSql(String dateField, String startDate, String endDate) {
         List<String> conditions = new ArrayList<>();
@@ -78,7 +79,7 @@ public class Utils {
     }
 
     public static String getUptimeString() {
-        long uptimeMillis = runtimeBean.getUptime();
+        long uptimeMillis = RUNTIME_BEAN.getUptime();
         long seconds = uptimeMillis / 1000;
 
         long days = seconds / (24 * 3600);
@@ -148,6 +149,25 @@ public class Utils {
             hex.append(String.format("%02x", b));
         }
         return hex.toString();
+    }
+
+    public static boolean isAuthenticatedPublic(Context ctx, MySQLConnection connection) {
+        String tokenHeader = ctx.header("x-api-key");
+        String tokenQuery = ctx.queryParam("auth");
+
+        String apiTokenId = null;
+        String token = null;
+
+        if (tokenHeader != null && !tokenHeader.isEmpty()) {
+            token = tokenHeader;
+        } else if (tokenQuery != null && !tokenQuery.isEmpty()) {
+            token = tokenQuery;
+        }
+        if (token != null) {
+            String foundId = connection.getApiKeyTable().getIdFromKey(token);
+            apiTokenId = (foundId != null && !foundId.isEmpty()) ? foundId : null;
+        }
+        return apiTokenId != null;
     }
 
     @Data

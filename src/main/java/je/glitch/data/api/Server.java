@@ -19,6 +19,7 @@ import je.glitch.data.api.models.User;
 import je.glitch.data.api.services.*;
 import je.glitch.data.api.utils.ErrorType;
 import je.glitch.data.api.utils.HttpException;
+import lombok.Getter;
 import org.eclipse.jetty.http.HttpCookie;
 import org.eclipse.jetty.server.session.*;
 import org.jetbrains.annotations.NotNull;
@@ -29,6 +30,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server {
+    public static Server INSTANCE;
+
     public static final Gson GSON = new GsonBuilder()
             .setPrettyPrinting()
             .disableHtmlEscaping()
@@ -48,7 +51,9 @@ public class Server {
             })
             .create();
 
+    @Getter
     private final MySQLConnection connection;
+
     private final CarparkController carparkController;
     private final VehicleController vehicleController;
     private final SimpleEndpointController simpleEndpointController;
@@ -69,6 +74,8 @@ public class Server {
     private final ExecutorService trackingThreadPool = Executors.newFixedThreadPool(4);
 
     public Server() {
+        INSTANCE = this;
+
         this.connection = new MySQLConnection();
         this.cache = new RedisCache();
 
@@ -164,15 +171,15 @@ public class Server {
             int status = ctx.statusCode();
             String ip = ctx.ip();
             String userAgent = ctx.userAgent();
-            String tokenHeader = ctx.header("Authorization");
+            String tokenHeader = ctx.header("x-api-key");
             String tokenQuery = ctx.queryParam("auth");
 
             trackingThreadPool.submit(() -> {
                 String apiTokenId = null;
                 String token = null;
 
-                if (tokenHeader != null && tokenHeader.startsWith("Bearer ")) {
-                    token = tokenHeader.substring(7);
+                if (tokenHeader != null && !tokenHeader.isEmpty()) {
+                    token = tokenHeader;
                 } else if (tokenQuery != null && !tokenQuery.isEmpty()) {
                     token = tokenQuery;
                 }
