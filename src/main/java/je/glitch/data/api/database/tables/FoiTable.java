@@ -50,11 +50,11 @@ public class FoiTable implements ITable {
                 query.append(" ").append(dateResult.getDateSql());
             }
 
-            addFilter(query, params, "title LIKE BINARY ?", ctx.queryParam("title"));
-            addFilter(query, params, "producer LIKE BINARY ?", ctx.queryParam("producer"));
-            addFilter(query, params, "author = BINARY ?", ctx.queryParam("author"));
-            addFilter(query, params, "requestText LIKE BINARY ?", ctx.queryParam("requestText"));
-            addFilter(query, params, "responseText LIKE BINARY ?", ctx.queryParam("responseText"));
+            addFilter(query, params, "title LIKE ?", ctx.queryParam("title"));
+            addFilter(query, params, "producer LIKE ?", ctx.queryParam("producer"));
+            addFilter(query, params, "author = ?", ctx.queryParam("author"));
+            addFilter(query, params, "requestText LIKE ?", ctx.queryParam("requestText"));
+            addFilter(query, params, "responseText LIKE ?", ctx.queryParam("responseText"));
 
             int page = ctx.queryParamAsClass("page", Integer.class).getOrDefault(1);
             int limit = ctx.queryParamAsClass("limit", Integer.class).getOrDefault(includeText ? 30 : 60);

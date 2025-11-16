@@ -18,9 +18,9 @@ public class CourtTable {
         List<Object> params = new ArrayList<>();
         StringBuilder query = new StringBuilder("FROM magistratesCourtHearings");
 
-        addFilter(query, params, "courtRoom LIKE BINARY ?", ctx.queryParam("courtRoom"));
-        addFilter(query, params, "hearingPurpose LIKE BINARY ?", ctx.queryParam("hearingPurpose"));
-        addFilter(query, params, "defendant LIKE BINARY ?", ctx.queryParam("defendant"));
+        addFilter(query, params, "courtRoom LIKE ?", ctx.queryParam("courtRoom"));
+        addFilter(query, params, "hearingPurpose LIKE ?", ctx.queryParam("hearingPurpose"));
+        addFilter(query, params, "defendant LIKE ?", ctx.queryParam("defendant"));
         addFilter(query, params, "appearanceDate >= ?", ctx.queryParam("startDate"));
         addFilter(query, params, "appearanceDate <= ?", ctx.queryParam("endDate"));
 
@@ -55,9 +55,9 @@ public class CourtTable {
         List<Object> params = new ArrayList<>();
         StringBuilder query = new StringBuilder("FROM magistratesCourtResults");
 
-        addFilter(query, params, "courtRoom LIKE BINARY ?", ctx.queryParam("courtRoom"));
-        addFilter(query, params, "hearingPurpose LIKE BINARY ?", ctx.queryParam("hearingPurpose"));
-        addFilter(query, params, "defendant LIKE BINARY ?", ctx.queryParam("defendant"));
+        addFilter(query, params, "courtRoom LIKE ?", ctx.queryParam("courtRoom"));
+        addFilter(query, params, "hearingPurpose LIKE ?", ctx.queryParam("hearingPurpose"));
+        addFilter(query, params, "defendant LIKE ?", ctx.queryParam("defendant"));
         addFilter(query, params, "appearanceDate >= ?", ctx.queryParam("startDate"));
         addFilter(query, params, "appearanceDate <= ?", ctx.queryParam("endDate"));
 
