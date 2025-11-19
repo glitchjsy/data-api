@@ -2,7 +2,7 @@ package je.glitch.data.api.controllers.v1;
 
 import io.javalin.http.Context;
 import je.glitch.data.api.models.ApiResponse;
-import je.glitch.data.api.models.FoiRequest;
+import je.glitch.data.api.modelsnew.outbound.foi.FoiRequestResponse;
 import je.glitch.data.api.services.FoiService;
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +20,7 @@ public class FoiController {
 
     public void handleGetById(Context ctx) {
         String id = ctx.pathParam("id");
-        FoiRequest request = service.getById(id);
+        FoiRequestResponse request = service.getById(id);
         ctx.json(new ApiResponse<>(request));
     }
 

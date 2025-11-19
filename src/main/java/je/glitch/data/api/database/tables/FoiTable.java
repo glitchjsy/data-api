@@ -2,8 +2,7 @@ package je.glitch.data.api.database.tables;
 
 import com.zaxxer.hikari.HikariDataSource;
 import io.javalin.http.Context;
-import je.glitch.data.api.models.FoiRequest;
-import je.glitch.data.api.models.User;
+import je.glitch.data.api.modelsnew.entities.FoiRequestEntity;
 import je.glitch.data.api.utils.ErrorType;
 import je.glitch.data.api.utils.HttpException;
 import je.glitch.data.api.utils.Utils;
@@ -16,14 +15,14 @@ import java.util.*;
 public class FoiTable implements ITable {
     private final HikariDataSource dataSource;
 
-    public FoiRequest getById(int id) {
+    public FoiRequestEntity getById(int id) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement stmt = connection.prepareStatement("SELECT * FROM foiRequests WHERE id = ?");
             stmt.setInt(1, id);
 
             try (ResultSet result = stmt.executeQuery()) {
                 if (result.next()) {
-                    return FoiRequest.of(result);
+                    return FoiRequestEntity.fromResultSet(result);
                 }
                 return null;
             }
@@ -33,7 +32,7 @@ public class FoiTable implements ITable {
         }
     }
 
-    public List<FoiRequest> getRequests(Context ctx) {
+    public List<FoiRequestEntity> getRequests(Context ctx) {
         try (Connection connection = dataSource.getConnection()) {
             Utils.QueryDateResult dateResult = Utils.queryDateSql(
                     "publishDate",

@@ -240,7 +240,11 @@ public class Server {
         app.get("/v1/charts/monthly-rainfall", simpleEndpointController::handleGetMonthlyRainfallChart);
         app.get("/v1/charts/registered-vehicles", simpleEndpointController::handleGetRegisteredVehiclesChart);
 
+        app.get("/v1/bus/routes", busController::handleGetRoutes);
         app.get("/v1/bus/stops", busController::handleGetStops);
+        app.get("/v1/bus/stops/{id}", busController::handleGetStop);
+        app.get("/v1/bus/live-updates", busController::handleGetLiveUpdates);
+        app.get("/v1/bus/live-updates-minimal", busController::handleGetMinUpdates);
 
         app.get("/admin/users", adminUsersController::handleGetUsers);
         app.post("/admin/users/new", adminUsersController::handleCreateUser);

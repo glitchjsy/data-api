@@ -1,9 +1,9 @@
 package je.glitch.data.api.database.tables;
 
 import com.zaxxer.hikari.HikariDataSource;
-import je.glitch.data.api.models.ApiRequestStats;
-import je.glitch.data.api.models.DailyRequestStat;
-import je.glitch.data.api.models.EndpointRequestStat;
+import je.glitch.data.api.modelsnew.entities.ApiRequestStatsEntity;
+import je.glitch.data.api.modelsnew.entities.DailyRequestStatEntity;
+import je.glitch.data.api.modelsnew.entities.EndpointRequestStatEntity;
 import lombok.RequiredArgsConstructor;
 
 import java.sql.Connection;
@@ -47,7 +47,7 @@ public class LogTable implements ITable {
         }
     }
 
-    public ApiRequestStats getRequestStats() {
+    public ApiRequestStatsEntity getRequestStats() {
         String sql = """
             SELECT
                 (SELECT COUNT(*) FROM apiRequests) AS totalAllTime,
@@ -61,7 +61,7 @@ public class LogTable implements ITable {
              ResultSet rs = stmt.executeQuery()) {
 
             if (rs.next()) {
-                return new ApiRequestStats(
+                return new ApiRequestStatsEntity(
                         rs.getLong("totalAllTime"),
                         rs.getLong("total24Hours"),
                         rs.getLong("total7Days"),
@@ -71,10 +71,10 @@ public class LogTable implements ITable {
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
-        return new ApiRequestStats(0, 0, 0, 0);
+        return new ApiRequestStatsEntity(0, 0, 0, 0);
     }
 
-    public List<DailyRequestStat> getDailyStatsForMonth(int year, int month) {
+    public List<DailyRequestStatEntity> getDailyStatsForMonth(int year, int month) {
         String sql = """
             SELECT DATE(createdAt) AS day,
                    CASE WHEN apiTokenId IS NULL THEN 'unauthenticated' ELSE 'authenticated' END AS authStatus,
@@ -85,7 +85,7 @@ public class LogTable implements ITable {
             ORDER BY day ASC
         """;
 
-        List<DailyRequestStat> stats = new ArrayList<>();
+        List<DailyRequestStatEntity> stats = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -95,7 +95,7 @@ public class LogTable implements ITable {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    stats.add(new DailyRequestStat(
+                    stats.add(new DailyRequestStatEntity(
                             rs.getString("day"),
                             rs.getString("authStatus"),
                             rs.getLong("total")
@@ -108,7 +108,7 @@ public class LogTable implements ITable {
         return stats;
     }
 
-    public List<EndpointRequestStat> getTopEndpoints(Integer year, Integer month) {
+    public List<EndpointRequestStatEntity> getTopEndpoints(Integer year, Integer month) {
         String baseSql = """
             SELECT path, COUNT(*) AS total
             FROM apiRequests
@@ -122,7 +122,7 @@ public class LogTable implements ITable {
         String groupOrderLimit = " GROUP BY path ORDER BY total DESC LIMIT 20";
         String sql = baseSql + " " + whereClause + groupOrderLimit;
 
-        List<EndpointRequestStat> stats = new ArrayList<>();
+        List<EndpointRequestStatEntity> stats = new ArrayList<>();
 
         try (Connection connection = dataSource.getConnection();
              PreparedStatement stmt = connection.prepareStatement(sql)) {
@@ -134,7 +134,7 @@ public class LogTable implements ITable {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
-                    stats.add(new EndpointRequestStat(
+                    stats.add(new EndpointRequestStatEntity(
                             rs.getString("path"),
                             rs.getLong("total")
                     ));

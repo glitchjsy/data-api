@@ -1,9 +1,10 @@
-package je.glitch.data.api.models;
+package je.glitch.data.api.modelsnew.outbound.admin;
 
 import lombok.Data;
 
 @Data
-public class ApiRequestStats {
+public class AdminRequestStatsResponse {
+    private final String apiUptime;
     private final long totalAllTime;
     private final long total24Hours;
     private final long total7Days;

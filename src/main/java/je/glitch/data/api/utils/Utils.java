@@ -3,6 +3,7 @@ package je.glitch.data.api.utils;
 import io.javalin.http.Context;
 import je.glitch.data.api.database.MySQLConnection;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+@Slf4j
 public class Utils {
     public static final String TEMP_ADMIN_API_KEY = "CHANGEME";
     public static final Pattern DATE_FORMAT = Pattern.compile("^\\d{4}[-/]\\d{2}[-/]\\d{2}$");
@@ -61,7 +63,7 @@ public class Utils {
     public static HttpResponse<String> sendRequest(HttpClient client, String url, String method, String body, String cookies) throws IOException, InterruptedException {
         HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                 .uri(URI.create(url))
-                .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7")
+                .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7;application/json")
                 .header("User-Agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36");
 
         if (cookies != null) {
@@ -74,6 +76,8 @@ public class Utils {
         } else {
             requestBuilder.GET();
         }
+
+        log.info("Outgoing request: " + method + " " + url);
 
         return client.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
     }
@@ -169,6 +173,41 @@ public class Utils {
         }
         return apiTokenId != null;
     }
+
+    public static <T> java.lang.reflect.Type listOf(Class<T> clazz) {
+        return com.google.gson.reflect.TypeToken.getParameterized(List.class, clazz).getType();
+    }
+
+    public static Integer parseInt(String raw) {
+        try {
+            return Integer.parseInt(raw);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    public static Integer optionalInt(String raw) {
+        if (raw == null) {
+            return null;
+        }
+        return parseInt(raw);
+    }
+
+    public static  Double parseDouble(String raw) {
+        try {
+            return Double.parseDouble(raw);
+        } catch (Exception ignored) {
+            return null;
+        }
+    }
+
+    public static Double optionalDouble(String raw) {
+        if (raw == null) {
+            return null;
+        }
+        return parseDouble(raw);
+    }
+
 
     @Data
     public static class QueryDateResult {

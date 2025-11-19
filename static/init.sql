@@ -127,7 +127,7 @@ CREATE TABLE `busStops` (
     `id` varchar(40) NOT NULL,
     `createdAt` timestamp DEFAULT current_timestamp NOT NULL,
     `name` varchar(50) NOT NULL,
-    `code` varchar(4) NOT NULL,
+    `stopNumber` varchar(4) NOT NULL,
     `latitude` decimal(10, 8),
     `longitude` decimal(11, 8),
     `shelter` boolean NOT NULL,
