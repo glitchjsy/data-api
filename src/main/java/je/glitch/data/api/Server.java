@@ -209,6 +209,7 @@ public class Server {
         app.get("/v1/carparks", carparkController::handleGetCarparks);
         app.get("/v1/carparks/spaces", carparkController::handleGetLiveSpaces);
         app.get("/v1/carparks/spaces/dates", carparkController::handleGetLiveSpacesDates);
+        app.get("/v1/carparks/spaces/dates/{date}", carparkController::handleGetLiveSpacesForDate);
         app.get("/v1/carparks/{idOrCode}", carparkController::handleGetCarpark);
 
         app.get("/v1/vehicles", vehicleController::handleGetVehicles);

@@ -29,14 +29,13 @@ public class CarparkController {
     }
 
     public void handleGetLiveSpaces(Context ctx) {
-        String date = ctx.queryParam("date");
         boolean includeCarparkInfo = "true".equalsIgnoreCase(ctx.queryParam("includeCarparkInfo"));
+        ctx.json(new ApiResponse<>(service.getLiveSpaces(includeCarparkInfo)));
+    }
 
-        if (date == null) {
-            ctx.json(new ApiResponse<>(service.getLiveSpaces(includeCarparkInfo)));
-        } else {
-            ctx.json(new ApiResponse<>(service.getLiveSpacesForDate(date)));
-        }
+    public void handleGetLiveSpacesForDate(Context ctx) {
+        String date = ctx.pathParam("date");
+        ctx.json(new ApiResponse<>(service.getLiveSpacesForDate(date)));
     }
 
     public void handleGetLiveSpacesDates(Context ctx) {
